@@ -1,6 +1,7 @@
 import sys
 import View
 import Model
+import DataGenerator.DataGenerator
 
 
 class Controller:
