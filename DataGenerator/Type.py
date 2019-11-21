@@ -249,6 +249,18 @@ class MedicalRecord:
         return f"INSERT INTO {TABLE_MEDICAL_RECORD} VALUES(" \
                f"'{self.description}', '{self.date}', {self.appointment_id}, {self.created_by});\n"
 
+    @staticmethod
+    def generate(n, date, appointment_id, dteam):
+        medical_records = []
+        for i in range(n):
+            mr = MedicalRecord()
+            mr.description = f"Medical recored description {random.randint(1, 1000)}."
+            mr.date = date
+            mr.appointment_id = appointment_id
+            mr.created_by = dteam
+            medical_records.append(mr)
+        return medical_records
+
 
 class Appointment:
     def __init__(self):
@@ -268,7 +280,7 @@ class Appointment:
     @staticmethod
     def generate(n, patient, dteams: DoctorTeam):
         pool = AppointmentIDPool()
-        apps = []
+        appointments = []
         for i in range(n):
             dteam = random.choice(dteams)
             app = Appointment()
@@ -278,6 +290,7 @@ class Appointment:
             app.doctor_team_id = dteam.doctor_team_id
             app.start_time = gen_datetime(start=datetime.datetime(2006, 1, 1))
             app.end_time = app.start_time + datetime.timedelta(minutes=15)
+            app.patient_id = patient.patient_id
 
             # generate notifications for the appointment
             notif_time = app.start_time - datetime.timedelta(minutes=15)
@@ -292,9 +305,9 @@ class Appointment:
                                                  random.randint(1, 20) * 50, acc_id,
                                                  random.choice([True, False])))
 
-            # todo: generate medical records
-            apps.append(app)
-        return apps
+            app.medical_records.extend(MedicalRecord.generate(1, app.end_time, app.id, app.doctor_team_id))
+            appointments.append(app)
+        return appointments
 
     def sql(self):
         appointment_sql = f"INSERT INTO {TABLE_APPOINTMENT} VALUES(" \
@@ -303,5 +316,6 @@ class Appointment:
                           f"{self.doctor_team_id}, {self.invoice_bill_id});\n"
         notif_sql = "".join([notif.sql() for notif in self.notifications])
         inv_bill_sql = "".join([inv.sql() for inv in self.invoice_bills])
+        mr_sql = "".join([mr.sql() for mr in self.medical_records])
 
-        return appointment_sql + notif_sql + inv_bill_sql
+        return appointment_sql + notif_sql + inv_bill_sql + mr_sql

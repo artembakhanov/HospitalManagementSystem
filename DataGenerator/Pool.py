@@ -138,7 +138,8 @@ class GeneralPool(Singleton):
         """
         Get something from general pool.
         :param name: what one wants to get.
-        Possible values: email, fname, lname, address, phone, password, userID, AccountantLicense, PharmacistLicense
+        Possible values: email, fname, lname, address, phone, password, userID, AccountantLicense, PharmacistLicense,
+        AppointmentID
         (Not case sensitive).
         :return: random value of what is requested
         """
@@ -148,5 +149,4 @@ class GeneralPool(Singleton):
 if __name__ == "__main__":
     sos = GeneralPool()
     sos1 = GeneralPool()
-    print(GeneralPool.instance, AddressPool.instance)
     print(sos.get("email"))
