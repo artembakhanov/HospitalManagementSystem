@@ -5,7 +5,7 @@ import sys
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
-from DataGenerator import UserGenerator, DoctorTeamGenerator, AppointmentsGenerator
+from DataGenerator import UserGenerator, DoctorTeamGenerator, AppointmentGenerator
 
 
 class DataGenerator:
@@ -32,7 +32,7 @@ class DataGenerator:
         self.sql.extend([team.sql() for team in self.dteams])
 
     def generate_appointments(self, users):
-        self.appointments = AppointmentsGenerator.generate(self.users, self.dteams)
+        self.appointments = AppointmentGenerator.generate(self.users, self.dteams)
         self.sql.extend([app.sql() for app in self.appointments])
 
     def generate_messages(self):
