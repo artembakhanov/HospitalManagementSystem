@@ -237,6 +237,19 @@ class InvoiceBill:
                f"'{self.date}', {self.price}, {self.created_by}, {self.is_paid});\n"
 
 
+class MedicalRecord:
+    def __init__(self, id_=None, description_=None, date_=None, appointment_id_=None, created_by_=None):
+        self.id = id_  # we do not use it in inserts
+        self.description = description_
+        self.date = date_
+        self.appointment_id = appointment_id_
+        self.created_by = created_by_
+
+    def sql(self):
+        return f"INSERT INTO {TABLE_MEDICAL_RECORD} VALUES(" \
+               f"'{self.description}', '{self.date}', {self.appointment_id}, {self.created_by});\n"
+
+
 class Appointment:
     def __init__(self):
         self.id = None
@@ -248,8 +261,9 @@ class Appointment:
         self.patient_id = None
         self.doctor_team_id = None
         self.invoice_bill_id = None
-        self.notifications = []
-        self.invoice_bills = []
+        self.notifications = []  # this is used only in code
+        self.invoice_bills = []  # this is used only in code
+        self.medical_records = []
 
     @staticmethod
     def generate(n, patient, dteams: DoctorTeam):
@@ -277,6 +291,8 @@ class Appointment:
             app.invoice_bills.append(InvoiceBill(None, app.end_time,
                                                  random.randint(1, 20) * 50, acc_id,
                                                  random.choice([True, False])))
+
+            # todo: generate medical records
             apps.append(app)
         return apps
 
