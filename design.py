@@ -53,10 +53,8 @@ class Ui_MainWindow(object):
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
         self.textEdit.setGeometry(QtCore.QRect(300, 40, 431, 301))
         self.textEdit.setStyleSheet("background:transparent;\n"
-                                   "background-color: rgb(255, 255, 255);")
+                                    "background-color: rgb(255, 255, 255);")
         self.textEdit.setObjectName("textEdit")
-        # TODO: Here we can add syntax highlighter
-        # self.highlighter = syntax.SQLHighlighter(self.textEdit.document())
         self.exe_button = QtWidgets.QPushButton(self.centralwidget)
         self.exe_button.setGeometry(QtCore.QRect(390, 360, 261, 61))
         self.exe_button.setStyleSheet("background:transparent;\n"
