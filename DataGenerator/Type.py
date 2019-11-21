@@ -1,6 +1,7 @@
 import random
 
 from DataGenerator.Pool import GeneralPool
+from DataGenerator.config import DOCTOR_NUMBER
 from static import *
 
 MIDDLE_NAME_CHANCE = 0.5

@@ -107,6 +107,11 @@ class UserIDPool(Pool):
         self._data = reversed([i for i in range(100001)])
 
 
+class AppointmentIDPool(Pool):
+    def init_data(self):
+        self._data = reversed([i for i in range(100001)])
+
+
 class LicensePool(Pool):
     def init_data(self):
         self._data = [i for i in range(10 ** 5, 10 ** 6)]

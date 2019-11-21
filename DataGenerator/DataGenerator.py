@@ -2,13 +2,10 @@ import inspect
 import os
 import sys
 
-from DataGenerator import UserGenerator, DoctorTeamGenerator
-
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
-
-
+from DataGenerator import UserGenerator, DoctorTeamGenerator, AppointmentsGenerator
 
 
 class DataGenerator:
@@ -23,6 +20,8 @@ class DataGenerator:
         """
         queries = []
         self.generate_users()
+        self.generate_doctor_teams()
+        self.generate_appointments(self.users)
 
     def generate_users(self):
         self.users = UserGenerator.generate()
@@ -32,8 +31,16 @@ class DataGenerator:
         self.dteams = DoctorTeamGenerator.generate()
         self.sql.extend([team.sql() for team in self.dteams])
 
+    def generate_appointments(self, users):
+        self.appointments = AppointmentsGenerator.generate(self.users, self.dteams)
+        self.sql.extend([app.sql() for app in self.appointments])
+
+    def generate_messages(self):
+        """
+        Also generates notifications for each message.
+        """
+        pass
 
 
 if __name__ == "__main__":
-    print(UserGenerator.generate())
-    print(DataGenerator().generate_users())
+    print(DataGenerator().generate())
