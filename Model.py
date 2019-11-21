@@ -1,5 +1,7 @@
 import psycopg2
 
+from DataGenerator import DataGenerator
+
 
 class SQL:
     def __init__(self):
@@ -33,3 +35,8 @@ class SQL:
 
         for row in rows:
             print(row)"""
+
+    def generate_data(self):
+        cur = self.conn.cursor()
+
+        cur.execute(DataGenerator().generate())
