@@ -104,12 +104,12 @@ class PasswordPool(Pool):
 
 class UserIDPool(Pool):
     def init_data(self):
-        self._data = reversed([i for i in range(100001)])
+        self._data = list(reversed([i for i in range(100001)]))
 
 
 class AppointmentIDPool(Pool):
     def init_data(self):
-        self._data = reversed([i for i in range(100001)])
+        self._data = list(reversed([i for i in range(100001)]))
 
 
 class LicensePool(Pool):

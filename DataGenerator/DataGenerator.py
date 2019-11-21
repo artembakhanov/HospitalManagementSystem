@@ -22,6 +22,7 @@ class DataGenerator:
         self.generate_users()
         self.generate_doctor_teams()
         self.generate_appointments(self.users)
+        return self.sql
 
     def generate_users(self):
         self.users = UserGenerator.generate()

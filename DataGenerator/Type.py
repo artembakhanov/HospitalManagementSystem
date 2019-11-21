@@ -277,6 +277,7 @@ class Appointment:
             app.invoice_bills.append(InvoiceBill(None, app.end_time,
                                                  random.randint(1, 20) * 50, acc_id,
                                                  random.choice([True, False])))
+            apps.append(app)
         return apps
 
     def sql(self):
