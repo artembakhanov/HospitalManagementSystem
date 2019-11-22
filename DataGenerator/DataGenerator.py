@@ -2,10 +2,12 @@ import inspect
 import os
 import sys
 
+
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 from DataGenerator import UserGenerator, DoctorTeamGenerator, AppointmentGenerator
+from DataGenerator.Type import Doctor
 
 
 class DataGenerator:
@@ -39,7 +41,8 @@ class DataGenerator:
         """
         Generate doctor teams.
         """
-        self.dteams = DoctorTeamGenerator.generate()
+        doctors = [user for user in self.users if user.__class__ == Doctor]
+        self.dteams = DoctorTeamGenerator.generate(doctors)
         self.sql.extend([team.sql() for team in self.dteams])
 
     def _generate_appointments(self, users):

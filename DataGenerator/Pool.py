@@ -126,6 +126,17 @@ class PharmacistLicensePool(LicensePool):
     pass
 
 
+class SlotPool(Pool):
+    data = []
+    _data = data
+
+    def __init__(self):
+        pass
+
+    def _get_data(self):
+        pass
+
+
 class GeneralPool(Singleton):
     def __init__(self):
         super().__init__()
@@ -139,7 +150,7 @@ class GeneralPool(Singleton):
         Get something from general pool.
         :param name: what one wants to get.
         Possible values: email, fname, lname, address, phone, password, userID, AccountantLicense, PharmacistLicense,
-        AppointmentID
+        AppointmentID, slot
         (Not case sensitive).
         :return: random value of what is requested
         """

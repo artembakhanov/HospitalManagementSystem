@@ -2,9 +2,8 @@ import datetime
 import random
 
 from DataGenerator.DateGenerator import gen_datetime
-from DataGenerator.Pool import GeneralPool, AppointmentIDPool
-from DataGenerator.config import DOCTOR_NUMBER, APPOINTMENT_NOTIFICATION_TITLE, APPOINTMENT_NOTIFICATION_CONTENT, \
-    ACCOUNTANT_NUMBER
+from DataGenerator.Pool import GeneralPool, SlotPool
+from DataGenerator.config import *
 from static import *
 
 MIDDLE_NAME_CHANCE = 0.5
@@ -100,12 +99,16 @@ class WorkingStaff(User):
         self.salary = None
         self.schedule = None
         self.qualification = None
+        self.hire_date = None
 
     @staticmethod
     def generate(n):
         users = super(WorkingStaff, WorkingStaff).generate(n)
         for user in users:
-            user.specialize(WorkingStaff, working_staff_id=user.user_id, salary=None, schedule=None, qualification=None)
+            user.specialize(WorkingStaff, working_staff_id=user.user_id,
+                            salary=None, schedule=None, qualification=None,
+                            hire_date=gen_datetime(datetime.datetime(HOSPITAL_START_YEAR, 1, 1),
+                                                   datetime.datetime(2018, 1, 1)))
         return users
 
     def sql(self):
@@ -193,17 +196,53 @@ class Pharmacist(WorkingStaff):
         return super(Pharmacist, self).sql() + new_sql
 
 
+class TimeSlot:
+    def __init__(self, doctor_team_id=None, start_=None, end_=None):
+        self.doctor_team_id = doctor_team_id
+        self.start = start_
+        self.end = end_
+
+
 class DoctorTeam:
     def __init__(self, doctor_team_id_, doctor_id_):
         self.doctor_team_id = doctor_team_id_
         self.doctor_id = doctor_id_
 
     @staticmethod
-    def generate(n):
+    def generate(n, doctors):
+        """
+        Side effect warning!!!
+        This method also generates all possible time slots
+        starting from doctor hire date until current date.
+
+        :param n: the number of doctor teams
+        :param doctors: list of all doctors
+        :return: list of doctor teams
+        """
+        pool = SlotPool()
         dteams = []
         for i in range(n):
             dteams.append(DoctorTeam(i + 1, i + 1))
+            DoctorTeam._add_time_slots(doctors[i], i + 1)
+        random.shuffle(pool.data)
         return dteams
+
+    @staticmethod
+    def _add_time_slots(doctor, doctor_team_id):
+        pool = SlotPool()
+        now = datetime.datetime.now()
+        cur = doctor.hire_date
+
+        # everyone works from START_WORKING_HOUR
+        cur = cur.replace(hour=START_WORKING_HOUR, minute=0, second=0, microsecond=0)
+        while cur < now:
+            # working only from Monday to Friday
+            # https://docs.python.org/3/library/datetime.html#datetime.date.weekday
+            if 0 <= cur.weekday() <= 4:
+                for i in range(MAX_SLOTS_PER_DAY):
+                    start_time = cur + i * datetime.timedelta(minutes=SLOT_DURATION)
+                    pool.data.append(TimeSlot(doctor_team_id, start_time, start_time + datetime.timedelta(minutes=15)))
+            cur += datetime.timedelta(days=1)
 
     def sql(self):
         return f"INSERT INTO {TABLE_DOCTOR_TEAM} VALUES (" \
@@ -279,17 +318,20 @@ class Appointment:
 
     @staticmethod
     def generate(n, patient, dteams: DoctorTeam):
-        pool = AppointmentIDPool()
+        pool = GeneralPool()
         appointments = []
         for i in range(n):
             dteam = random.choice(dteams)
             app = Appointment()
-            app.id = pool.get()
+            app.id = pool.get("AppointmentID")
             app.room = random.randint(100, 500)
             app.type = random.randint(0, 1)
-            app.doctor_team_id = dteam.doctor_team_id
-            app.start_time = gen_datetime(start=datetime.datetime(2006, 1, 1))
-            app.end_time = app.start_time + datetime.timedelta(minutes=15)
+
+            # getting a free slot
+            slot = pool.get("slot")
+            app.start_time = slot.start
+            app.end_time = slot.end
+            app.doctor_team_id = slot.doctor_team_id
             app.patient_id = patient.patient_id
 
             # generate notifications for the appointment
