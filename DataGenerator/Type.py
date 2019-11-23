@@ -68,7 +68,7 @@ class User:
             self.__setattr__(key, value)
 
     def sql(self):
-        return f"INSERT INTO {TABLE_USER}" \
+        return f"INSERT INTO {TABLE_USER} {VALUES_USER}" \
                f"VALUES ('{self.email}', " \
                f"'{self.fname}', '{self.lname}', " \
                f"'{self.mname}', '{self.gender}', " \
@@ -93,7 +93,7 @@ class Patient(User):
         return users
 
     def sql(self):
-        new_sql = f"INSERT INTO {TABLE_PATIENT} VALUES (" \
+        new_sql = f"INSERT INTO {TABLE_PATIENT} {VALUES_PATIENT} VALUES (" \
                   f"{self.user_id}" \
                   f");\n"
         return super(Patient, self).sql() + new_sql
@@ -123,7 +123,7 @@ class Schedule:
 class WorkingStaff(User):
     def __init__(self):
         super(WorkingStaff, self).__init__()
-        self.working_staff_id = self.user_id  # really smart approach
+        self.working_staff_id = None # really smart approach
         self.salary = None
         self.schedule = None
         self.qualification = None
@@ -145,7 +145,7 @@ class WorkingStaff(User):
         return users
 
     def sql(self):
-        new_sql = f"INSERT INTO {TABLE_WORKING_STAFF} VALUES(" \
+        new_sql = f"INSERT INTO {TABLE_WORKING_STAFF} {VALUES_WORKING_STAFF} VALUES(" \
                   f"{self.user_id}, {self.salary}, '{self.qualification}');\n"
         schedule_sql = "".join([f"INSERT INTO {TABLE_STAFF_SCHEDULE}  {VALUES_STAFF_SCHEDULE} VALUES({self.working_staff_id}, {i});\n"
                                 for i in self.schedule])
@@ -187,7 +187,7 @@ class Doctor(WorkingStaff):
 
     def sql(self):
         new_sql = f"INSERT INTO {TABLE_DOCTOR} VALUES (" \
-                  f"{self.user_id}, {self.room});\n"
+                  f"{self.working_staff_id}, {self.room});\n"
         return super(Doctor, self).sql() + new_sql
 
 
@@ -207,7 +207,7 @@ class Nurse(WorkingStaff):
 
     def sql(self):
         new_sql = f"INSERT INTO {TABLE_NURSE} VALUES (" \
-                  f"{self.user_id}, {self.doctor_team});\n"
+                  f"{self.working_staff_id}, {self.doctor_team});\n"
         return super(Nurse, self).sql() + new_sql
 
 
@@ -227,7 +227,7 @@ class Accountant(WorkingStaff):
 
     def sql(self):
         new_sql = f"INSERT INTO {TABLE_ACCOUNTANT} VALUES(" \
-                  f"{self.user_id}, {self.license_id});\n"
+                  f"{self.working_staff_id}, {self.license_id});\n"
         return super(Accountant, self).sql() + new_sql
 
 
@@ -247,7 +247,7 @@ class Pharmacist(WorkingStaff):
 
     def sql(self):
         new_sql = f"INSERT INTO {TABLE_PHARMACIST} VALUES (" \
-                  f"{self.user_id}, {self.license_id});\n"
+                  f"{self.working_staff_id}, {self.license_id});\n"
         return super(Pharmacist, self).sql() + new_sql
 
 
@@ -300,8 +300,8 @@ class DoctorTeam:
             cur += datetime.timedelta(days=1)
 
     def sql(self):
-        return f"INSERT INTO {TABLE_DOCTOR_TEAM} VALUES (" \
-               f"{self.doctor_team_id}, {self.doctor_id});\n"
+        return f"INSERT INTO {TABLE_DOCTOR_TEAM} {VALUES_DOCTOR_TEAM} VALUES (" \
+               f"{self.doctor_id});\n"
 
 
 class Notification:
@@ -314,7 +314,7 @@ class Notification:
 
     def sql(self):
         return f"INSERT INTO {TABLE_NOTIFICATION} VALUES(" \
-               f"{self.id}, '{str(self.date)}', '{self.title}'," \
+               f"'{str(self.date)}', '{self.title}'," \
                f" '{self.content}', {self.user_id});\n"
 
 
