@@ -15,7 +15,15 @@ TABLE_ADMIN = "ADMIN"
 TABLE_BLOCKED = "BLOCKED"
 TABLE_SCHEDULE = "SCHEDULE"
 TABLE_STAFF_SCHEDULE = "STAFF_SCHEDULE"
-
+VALUES_USER = "(Email, Fname, Lname, Mname, Gender, Birth_date, Address, Role, Password_hash)"
+VALUES_PATIENT = "(User_id)"
+VALUES_WORKING_STAFF = "(User_id, Salary, Qualification)"
+VALUES_DOCTOR = "(W_staff_id, Room)"
+VALUES_NURSE = "(W_staff_id, Doctor_team_id)"
+VALUES_ACCOUNTANT = "(W_staff_id, License_id)"
+VALUES_PHARMACIST = "(W_staff_id, Licence_id)"
+VALUES_DOCTOR_TEAM = "(Doc_id)"
+VALUES_NOTIFICATION = "(Notification_time, Title, Content, User_id)"
 VALUES_APPOINTMENT = "(Room, Type, Start_time, End_time, Patient_id, Doctor_team_id, Invoice_bill_id)"
 VALUES_INVOICE_BILL = "(Invoice_date, Price, Created_by, Is_paid)"
 VALUES_MEDICAL_RECORD = "(Description, Med_rec_date, Appointment_id, Created_by)"
@@ -24,7 +32,6 @@ VALUES_ADMIN = ""
 VALUES_BLOCKED = "(User_id, Admin_id)"
 VALUES_SCHEDULE = "(Week_day, Start_time, End_time)"
 VALUES_STAFF_SCHEDULE = "(W_staff_id, Schedule_id)"
-
 ROLE_USER = 0
 ROLE_PATIENT = 1
 ROLE_WORKING_STAFF = 2
