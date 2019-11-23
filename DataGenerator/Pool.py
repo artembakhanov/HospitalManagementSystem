@@ -1,5 +1,7 @@
 from random import shuffle
 
+from DataGenerator.config import *
+
 
 def inheritors(cls):
     """
@@ -104,12 +106,12 @@ class PasswordPool(Pool):
 
 class UserIDPool(Pool):
     def init_data(self):
-        self._data = list(reversed([i for i in range(100001)]))
+        self._data = list(reversed([i for i in range(1, 100001)]))
 
 
 class AppointmentIDPool(Pool):
     def init_data(self):
-        self._data = list(reversed([i for i in range(100001)]))
+        self._data = list(reversed([i for i in range(1, 100001)]))
 
 
 class LicensePool(Pool):
@@ -137,6 +139,12 @@ class SlotPool(Pool):
         pass
 
 
+class DoctorRoomPool(Pool):
+    def init_data(self):
+        self._data = [i for i in range(1, DOCTOR_NUMBER)]
+        shuffle(self._data)
+
+
 class GeneralPool(Singleton):
     def __init__(self):
         super().__init__()
@@ -150,7 +158,7 @@ class GeneralPool(Singleton):
         Get something from general pool.
         :param name: what one wants to get.
         Possible values: email, fname, lname, address, phone, password, userID, AccountantLicense, PharmacistLicense,
-        AppointmentID, slot
+        AppointmentID, slot, DoctorRoom
         (Not case sensitive).
         :return: random value of what is requested
         """

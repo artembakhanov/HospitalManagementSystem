@@ -7,6 +7,7 @@ from DataGenerator.config import *
 from static import *
 
 MIDDLE_NAME_CHANCE = 0.5
+BLOCKED_CHANCE = 0.003
 
 
 class User:
@@ -20,7 +21,8 @@ class User:
         self.birth_date = None
         self.gender = None
         self.address = None
-        self.role = None
+        self.role = ROLE_USER
+        self.blocked_by = None
 
     def __str__(self):
         return f"User {{" \
@@ -52,6 +54,8 @@ class User:
             user.password_hash = pool.get("password")
             if random.random() >= MIDDLE_NAME_CHANCE:
                 user.mname = pool.get("fname").capitalize()
+            if random.random() <= BLOCKED_CHANCE:
+                user.blocked_by = random.randint(1, ADMIN_NUMBER)
             user.gender = "M" if random.random() >= 0.5 else "F"
             user.birth_date = None  # TODO: make birthdate generator
             users.append(user)
@@ -70,19 +74,22 @@ class User:
                f"'{self.mname}', '{self.gender}', " \
                f"{self.birth_date} '{self.address}', " \
                f"{self.role}, '{self.password_hash}'," \
-               f"NULL);\n"
+               f"NULL);\n" + \
+               (f"INSERT INTO {TABLE_BLOCKED} VALUES({self.user_id}, {self.blocked_by});\n" if self.blocked_by else "")
 
 
 class Patient(User):
     def __init__(self):
         super(Patient, self).__init__()
         self.patient_id = None
+        self.role += ROLE_PATIENT
 
     @staticmethod
     def generate(n):
         users = super(Patient, Patient).generate(n)
-        for user in users:
-            user.specialize(Patient, patient_id=user.user_id)
+        for i, user in enumerate(users):
+            user.role += ROLE_PATIENT
+            user.specialize(Patient, patient_id=i + 1)
         return users
 
     def sql(self):
@@ -90,6 +97,27 @@ class Patient(User):
                   f"{self.user_id}" \
                   f");\n"
         return super(Patient, self).sql() + new_sql
+
+
+class Schedule:
+    def __init__(self, id_=None, week_day_=None, start_time_=None, end_time_=None):
+        self.id = id_
+        self.week_day = week_day_
+        self.start_time = start_time_
+        self.end_time = end_time_
+
+    @staticmethod
+    def generate():
+        schedule = []
+        for i in range(1, 6):
+            schedule.append(Schedule(week_day_=i, start_time_=datetime.time(START_WORKING_HOUR),
+                                     end_time_=datetime.time(END_WORKING_HOUR)))
+
+        return schedule
+
+    def sql(self):
+        return f"INSERT INTO {TABLE_SCHEDULE} VALUES(" \
+               f"{self.id}, {self.week_day}, '{self.start_time}', '{self.end_time}');\n"
 
 
 class WorkingStaff(User):
@@ -104,35 +132,61 @@ class WorkingStaff(User):
     @staticmethod
     def generate(n):
         users = super(WorkingStaff, WorkingStaff).generate(n)
-        for user in users:
-            user.specialize(WorkingStaff, working_staff_id=user.user_id,
-                            salary=None, schedule=None, qualification=None,
+        for i, user in enumerate(users):
+            user.role += 0 # todo: cock
+            user.specialize(WorkingStaff,
+                            working_staff_id=i + 1,
+                            salary=None,
+                            schedule=[1, 2, 3, 4, 5],
+                            qualification=f"Qualification {random.randint(1, 500)}",
+                            # this is really interesting kostyl, text me if you can not get it
                             hire_date=gen_datetime(datetime.datetime(HOSPITAL_START_YEAR, 1, 1),
                                                    datetime.datetime(2018, 1, 1)))
         return users
 
     def sql(self):
         new_sql = f"INSERT INTO {TABLE_WORKING_STAFF} VALUES(" \
-                  f"{self.user_id}, {self.salary}, NULL, NULL, '{self.qualification}');\n"
-        return super(WorkingStaff, self).sql() + new_sql
+                  f"{self.user_id}, {self.salary}, '{self.qualification}');\n"
+        schedule_sql = "".join([f"INSERT INTO {TABLE_STAFF_SCHEDULE} VALUES({self.working_staff_id}, {i});\n"
+                                for i in self.schedule])
+        return super(WorkingStaff, self).sql() + new_sql + schedule_sql
+
+
+class Admin(WorkingStaff):
+    def __init__(self):
+        super(Admin, self).__init__()
+        self.admin_id = None
+
+    @staticmethod
+    def generate(n):
+        users = super(Admin, Admin).generate(n)
+        pool = GeneralPool()
+        for user in users:
+            user.specialize(Admin, admin_id=None)
+
+    def sql(self):
+        new_sql = f"INSERT INTO {TABLE_ADMIN} VALUES();\n"
+        return super(Admin, self).sql() + new_sql
 
 
 class Doctor(WorkingStaff):
     def __init__(self):
         super(Doctor, self).__init__()
         self.doctor_id = self.user_id
+        self.room = None
 
     @staticmethod
     def generate(n):
         users = super(Doctor, Doctor).generate(n)
+        pool = GeneralPool()
         for user in users:
             user.specialize(Doctor, doctor_id=user.user_id, salary=random.randint(40, 120) * 50,
-                            qualification=f"Qualification {random.randint(1, 50)}")
+                            qualification=f"Qualification {random.randint(1, 50)}", room=pool.get("DoctorRoom"))
         return users
 
     def sql(self):
         new_sql = f"INSERT INTO {TABLE_DOCTOR} VALUES (" \
-                  f"{self.user_id});\n"
+                  f"{self.user_id}, {self.room});\n"
         return super(Doctor, self).sql() + new_sql
 
 
@@ -276,6 +330,16 @@ class InvoiceBill:
                f"'{self.date}', {self.price}, {self.created_by}, {self.is_paid});\n"
 
 
+class Prescription:
+    def __init__(self):
+        self.id = None
+        self.medicals = []
+
+    def sql(self):
+        medicals_sql = "".join([medical.sql() for medical in self.medicals])
+        return medicals_sql + f"INSERT INTO {TABLE_PRESCRIPTION} VALUES();\n"
+
+
 class MedicalRecord:
     def __init__(self, id_=None, description_=None, date_=None, appointment_id_=None, created_by_=None):
         self.id = id_  # we do not use it in inserts
@@ -283,6 +347,7 @@ class MedicalRecord:
         self.date = date_
         self.appointment_id = appointment_id_
         self.created_by = created_by_
+        self.prescription = None
 
     def sql(self):
         return f"INSERT INTO {TABLE_MEDICAL_RECORD} VALUES(" \
@@ -293,10 +358,11 @@ class MedicalRecord:
         medical_records = []
         for i in range(n):
             mr = MedicalRecord()
-            mr.description = f"Medical recored description {random.randint(1, 1000)}."
+            mr.description = f"Medical record description {random.randint(1, 1000)}."
             mr.date = date
             mr.appointment_id = appointment_id
             mr.created_by = dteam
+            mr.prescription = Prescription()
             medical_records.append(mr)
         return medical_records
 
