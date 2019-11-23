@@ -1,7 +1,7 @@
 import psycopg2
 
 from DataGenerator import DataGenerator
-from static import DATABASE_NAME
+from static import DATABASE_NAME, DATABASE_LOGIN, DATABASE_PASSWORD
 
 
 class SQL:
@@ -11,8 +11,8 @@ class SQL:
         # Я ПОМЕНЯЮ СПАСИБО
         self.conn = psycopg2.connect(
             database=DATABASE_NAME,
-            user='postgres',
-            password='root1234'
+            user=DATABASE_LOGIN,
+            password=DATABASE_PASSWORD
         )
 
         print('Connected successfully')
