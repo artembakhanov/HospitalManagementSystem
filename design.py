@@ -99,4 +99,3 @@ class Ui_MainWindow(object):
         self.def_label.setText(_translate("MainWindow", " Default queries"))
         self.ur_label.setText(_translate("MainWindow", "  Your queries"))
         self.gen_data_button.setText(_translate("MainWindow", "Generate Data"))
-
