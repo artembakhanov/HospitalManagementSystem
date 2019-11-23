@@ -109,6 +109,11 @@ class UserIDPool(Pool):
         self._data = list(reversed([i for i in range(1, 100001)]))
 
 
+class WorkingStaffIDPool(Pool):
+    def init_data(self):
+        self._data = list(reversed([i for i in range(1, USER_NUMBER)]))
+
+
 class AppointmentIDPool(Pool):
     def init_data(self):
         self._data = list(reversed([i for i in range(1, 100001)]))
@@ -141,7 +146,7 @@ class SlotPool(Pool):
 
 class DoctorRoomPool(Pool):
     def init_data(self):
-        self._data = [i for i in range(1, DOCTOR_NUMBER)]
+        self._data = [i for i in range(1, DOCTOR_NUMBER + 1)]
         shuffle(self._data)
 
 

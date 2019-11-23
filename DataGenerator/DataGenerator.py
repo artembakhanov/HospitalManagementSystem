@@ -2,7 +2,6 @@ import inspect
 import os
 import sys
 
-
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
@@ -25,12 +24,14 @@ class DataGenerator:
         :return: a string with queries
         """
         self.sql = []
-        self._generate_users()
-        print("users have been generated")
+
         self._generate_schedule()
         print("schedules have been generated")
+        self._generate_users()  # without nurses
+        print("users have been generated")
         self._generate_doctor_teams()
         print("doctors have been generated")
+
         self._generate_appointments(self.users)
         print("appointments have been generated")
         return self.sql
@@ -49,6 +50,10 @@ class DataGenerator:
         doctors = [user for user in self.users if user.__class__ == Doctor]
         self.dteams = DoctorTeamGenerator.generate(doctors)
         self.sql.extend([team.sql() for team in self.dteams])
+
+    def _generate_nurses(self):
+        self.nurses = UserGenerator.generate_nurses()
+        self.sql.extend([user.sql() for user in self.users])
 
     def _generate_appointments(self, users):
         """

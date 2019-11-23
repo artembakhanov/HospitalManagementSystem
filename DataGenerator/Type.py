@@ -57,7 +57,8 @@ class User:
             if random.random() <= BLOCKED_CHANCE:
                 user.blocked_by = random.randint(1, ADMIN_NUMBER)
             user.gender = "M" if random.random() >= 0.5 else "F"
-            user.birth_date = None  # TODO: make birthdate generator
+            user.birth_date = gen_datetime(datetime.datetime(START_BIRTHDATE_YEAR, 1, 1),
+                                           datetime.datetime(END_BIRTHDATE_YEAR, 1, 1))
             users.append(user)
 
         return users
@@ -73,9 +74,9 @@ class User:
                f"'{self.fname}', '{self.lname}', " \
                f"'{self.mname}', '{self.gender}', " \
                f"'{self.birth_date}', '{self.address}', " \
-               f"{self.role}, '{self.password_hash}'," \
-               f"NULL);\n" + \
-               (f"INSERT INTO {TABLE_BLOCKED}  {VALUES_BLOCKED} VALUES({self.user_id}, {self.blocked_by});\n" if self.blocked_by else "")
+               f"{self.role}, '{self.password_hash}');\n" + \
+               (
+                   f"INSERT INTO {TABLE_BLOCKED}  {VALUES_BLOCKED} VALUES({self.user_id}, {self.blocked_by});\n" if self.blocked_by else "")
 
 
 class Patient(User):
@@ -123,20 +124,21 @@ class Schedule:
 class WorkingStaff(User):
     def __init__(self):
         super(WorkingStaff, self).__init__()
-        self.working_staff_id = None # really smart approach
-        self.salary = None
+        self.working_staff_id = None  # really smart approach
+        self.salary = 2000
         self.schedule = None
         self.qualification = None
         self.hire_date = None
 
     @staticmethod
     def generate(n):
+        pool = GeneralPool()
         users = super(WorkingStaff, WorkingStaff).generate(n)
         for i, user in enumerate(users):
-            user.role += 0 # todo: cock
+            user.role += 0  # todo: cock
             user.specialize(WorkingStaff,
-                            working_staff_id=i + 1,
-                            salary=None,
+                            working_staff_id=pool.get("WorkingStaffID"),
+                            salary=1000,
                             schedule=[1, 2, 3, 4, 5],
                             qualification=f"Qualification {random.randint(1, 500)}",
                             # this is really interesting kostyl, text me if you can not get it
@@ -147,8 +149,9 @@ class WorkingStaff(User):
     def sql(self):
         new_sql = f"INSERT INTO {TABLE_WORKING_STAFF} {VALUES_WORKING_STAFF} VALUES(" \
                   f"{self.user_id}, {self.salary}, '{self.qualification}');\n"
-        schedule_sql = "".join([f"INSERT INTO {TABLE_STAFF_SCHEDULE}  {VALUES_STAFF_SCHEDULE} VALUES({self.working_staff_id}, {i});\n"
-                                for i in self.schedule])
+        schedule_sql = "".join(
+            [f"INSERT INTO {TABLE_STAFF_SCHEDULE}  {VALUES_STAFF_SCHEDULE} VALUES({self.working_staff_id}, {i});\n"
+             for i in self.schedule])
         return super(WorkingStaff, self).sql() + new_sql + schedule_sql
 
 
@@ -162,11 +165,12 @@ class Admin(WorkingStaff):
         users = super(Admin, Admin).generate(n)
         pool = GeneralPool()
         for user in users:
-            user.specialize(Admin, admin_id=None)
+            user.specialize(Admin, admin_id=None, salary=random.randint(4, 10) * 250)
+        return users
 
     def sql(self):
         new_sql = f"INSERT INTO {TABLE_ADMIN} {VALUES_ADMIN} VALUES(" \
-                f"{self.working_staff_id});\n"
+                  f"{self.working_staff_id});\n"
         return super(Admin, self).sql() + new_sql
 
 
@@ -186,7 +190,7 @@ class Doctor(WorkingStaff):
         return users
 
     def sql(self):
-        new_sql = f"INSERT INTO {TABLE_DOCTOR} VALUES (" \
+        new_sql = f"INSERT INTO {TABLE_DOCTOR} {VALUES_DOCTOR} VALUES (" \
                   f"{self.working_staff_id}, {self.room});\n"
         return super(Doctor, self).sql() + new_sql
 
@@ -206,7 +210,7 @@ class Nurse(WorkingStaff):
         return users
 
     def sql(self):
-        new_sql = f"INSERT INTO {TABLE_NURSE} VALUES (" \
+        new_sql = f"INSERT INTO {TABLE_NURSE} {VALUES_NURSE} VALUES (" \
                   f"{self.working_staff_id}, {self.doctor_team});\n"
         return super(Nurse, self).sql() + new_sql
 
@@ -226,7 +230,7 @@ class Accountant(WorkingStaff):
         return users
 
     def sql(self):
-        new_sql = f"INSERT INTO {TABLE_ACCOUNTANT} VALUES(" \
+        new_sql = f"INSERT INTO {TABLE_ACCOUNTANT} {VALUES_ACCOUNTANT} VALUES(" \
                   f"{self.working_staff_id}, {self.license_id});\n"
         return super(Accountant, self).sql() + new_sql
 
@@ -242,20 +246,22 @@ class Pharmacist(WorkingStaff):
         pool = GeneralPool()
         users = super(Pharmacist, Pharmacist).generate(n)
         for user in users:
-            user.specialize(Accountant, pharmacist_id=user.user_id, license_id=pool.get("PharmacistLicense"))
+            user.specialize(Accountant, pharmacist_id=user.user_id, license_id=pool.get("PharmacistLicense"),
+                            salary=random.randint(1, 10) * 200)
         return users
 
     def sql(self):
-        new_sql = f"INSERT INTO {TABLE_PHARMACIST} VALUES (" \
+        new_sql = f"INSERT INTO {TABLE_PHARMACIST} {VALUES_PHARMACIST} VALUES (" \
                   f"{self.working_staff_id}, {self.license_id});\n"
         return super(Pharmacist, self).sql() + new_sql
 
 
 class TimeSlot:
-    def __init__(self, doctor_team_id=None, start_=None, end_=None):
+    def __init__(self, doctor_team_id=None, start_=None, end_=None, room_=None):
         self.doctor_team_id = doctor_team_id
         self.start = start_
         self.end = end_
+        self.room = room_
 
 
 class DoctorTeam:
@@ -296,7 +302,7 @@ class DoctorTeam:
             if 0 <= cur.weekday() <= 4:
                 for i in range(MAX_SLOTS_PER_DAY):
                     start_time = cur + i * datetime.timedelta(minutes=SLOT_DURATION)
-                    pool.data.append(TimeSlot(doctor_team_id, start_time, start_time + datetime.timedelta(minutes=15)))
+                    pool.data.append(TimeSlot(doctor_team_id, start_time, start_time + datetime.timedelta(minutes=15), doctor.room))
             cur += datetime.timedelta(days=1)
 
     def sql(self):
@@ -313,7 +319,7 @@ class Notification:
         self.user_id = user_id_
 
     def sql(self):
-        return f"INSERT INTO {TABLE_NOTIFICATION} VALUES(" \
+        return f"INSERT INTO {TABLE_NOTIFICATION} {VALUES_NOTIFICATION} VALUES(" \
                f"'{str(self.date)}', '{self.title}'," \
                f" '{self.content}', {self.user_id});\n"
 
@@ -391,7 +397,6 @@ class Appointment:
             dteam = random.choice(dteams)
             app = Appointment()
             app.id = pool.get("AppointmentID")
-            app.room = random.randint(100, 500)
             app.type = random.randint(0, 1)
 
             # getting a free slot
@@ -400,6 +405,8 @@ class Appointment:
             app.end_time = slot.end
             app.doctor_team_id = slot.doctor_team_id
             app.patient_id = patient.patient_id
+            app.room = slot.room
+
 
             # generate notifications for the appointment
             notif_time = app.start_time - datetime.timedelta(minutes=15)
@@ -413,7 +420,7 @@ class Appointment:
             app.invoice_bills.append(InvoiceBill(None, app.end_time,
                                                  random.randint(1, 20) * 50, acc_id,
                                                  random.choice([True, False])))
-
+            app.invoice_bill_id = app.id
             app.medical_records.extend(MedicalRecord.generate(1, app.end_time, app.id, app.doctor_team_id))
             appointments.append(app)
         return appointments
@@ -427,4 +434,4 @@ class Appointment:
         inv_bill_sql = "".join([inv.sql() for inv in self.invoice_bills])
         mr_sql = "".join([mr.sql() for mr in self.medical_records])
 
-        return appointment_sql + notif_sql + inv_bill_sql + mr_sql
+        return notif_sql + inv_bill_sql + appointment_sql + mr_sql

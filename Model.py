@@ -1,6 +1,7 @@
 import psycopg2
 
 from DataGenerator import DataGenerator
+from static import DATABASE_NAME
 
 
 class SQL:
@@ -9,7 +10,7 @@ class SQL:
         # АРТЕМ ПОМЕНЯЙ ЭТО НА КОННЕКТ ТУ ДАМБ
         # Я ПОМЕНЯЮ СПАСИБО
         self.conn = psycopg2.connect(
-            database='scp',
+            database=DATABASE_NAME,
             user='postgres',
             password='root1234'
         )
@@ -39,4 +40,13 @@ class SQL:
     def generate_data(self):
         cur = self.conn.cursor()
 
-        cur.execute(DataGenerator().generate())
+        for x in DataGenerator().generate():
+            f = open('insertion.sql', 'w')
+            f.write(x)
+            f.close()
+            cur.execute(x)
+
+        print("HAHAHAHHAHAHAHAHHAHAHAHAH")
+        self.conn.commit()
+
+        print("HAHAHAHHAHAHAHAHHAHAHAHAH222222222222")

@@ -13,12 +13,17 @@ class Controller:
 
         # Adding functionality to buttons
         self.main_window.exe_button.clicked.connect(self.SQL_query)  # "Execute" button
+        self.main_window.gen_data_button.clicked.connect(self.Generate_data)  # "Generate data" button
 
         # Connecting to SQL DB
         self.sql_db = Model.SQL()
 
         # Executing the app
         self.app.exec_()
+
+
+    def Generate_data(self):
+        self.sql_db.generate_data()
 
     def SQL_query(self):
         """Reads the input from Text Field and either outputs the requested query in form of a table
