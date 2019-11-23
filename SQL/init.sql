@@ -66,7 +66,7 @@ CREATE TABLE STAFF_SCHEDULE (
     W_staff_id INTEGER REFERENCES WORKING_STAFF(W_staff_id),
     Schedule_id INTEGER REFERENCES SCHEDULE (Schedule_id),
     PRIMARY KEY(W_staff_id, Schedule_id)
-)
+);
 
 CREATE TABLE PATIENT (
     Patient_id INTEGER REFERENCES GENERAL_USER(User_id),
@@ -95,13 +95,6 @@ CREATE TABLE INVOICE_BILL (
     Created_by INTEGER REFERENCES ACCOUNTANT(Acc_id),
     Is_paid BOOLEAN NOT NULL,
     PRIMARY KEY (Invoice_bill_id)
-);
-
-CREATE TABLE PRESCRIPTION (
-    Prescription_id INTEGER,
-    Medicals VARCHAR(50) NOT NULL,
-    Med_rec_id INTEGER REFERENCES MEDICAL_RECORD(Med_rec_id),
-    PRIMARY KEY (Prescription_id)
 );
 
 CREATE TABLE PHARMACIST (
@@ -224,4 +217,11 @@ CREATE TABLE MEDICAL_RECORD (
     Appointment_id INTEGER REFERENCES APPOINTMENT(Appointment_id),
     Created_by INTEGER REFERENCES DOCTOR_TEAM(Doctor_team_id),
     PRIMARY KEY(Med_rec_id)
+);
+
+CREATE TABLE PRESCRIPTION (
+    Prescription_id INTEGER,
+    Medicals VARCHAR(50) NOT NULL,
+    Med_rec_id INTEGER REFERENCES MEDICAL_RECORD(Med_rec_id),
+    PRIMARY KEY (Prescription_id)
 );
