@@ -68,11 +68,11 @@ class User:
             self.__setattr__(key, value)
 
     def sql(self):
-        return f"INSERT INTO {TABLE_USER} " \
+        return f"INSERT INTO {TABLE_USER}" \
                f"VALUES ('{self.email}', " \
                f"'{self.fname}', '{self.lname}', " \
                f"'{self.mname}', '{self.gender}', " \
-               f"{self.birth_date} '{self.address}', " \
+               f"'{self.birth_date}', '{self.address}', " \
                f"{self.role}, '{self.password_hash}'," \
                f"NULL);\n" + \
                (f"INSERT INTO {TABLE_BLOCKED} VALUES({self.user_id}, {self.blocked_by});\n" if self.blocked_by else "")

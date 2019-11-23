@@ -70,37 +70,37 @@ class AddressPool(Pool):
     """
 
     def __init__(self):
-        self._name = "address.txt"
+        self._name = "DataGenerator/address.txt"
         super().__init__()
 
 
 class FNamePool(Pool):
     def __init__(self):
-        self._name = "first_names.all.txt"
+        self._name = "DataGenerator/first_names.all.txt"
         super().__init__()
 
 
 class LNamePool(Pool):
     def __init__(self):
-        self._name = "last_names.all.txt"
+        self._name = "DataGenerator/last_names.all.txt"
         super().__init__()
 
 
 class EmailPool(Pool):
     def __init__(self):
-        self._name = "email.txt"
+        self._name = "DataGenerator/email.txt"
         super().__init__()
 
 
 class PhonePool(Pool):
     def __init__(self):
-        self._name = "phone.txt"
+        self._name = "DataGenerator/phone.txt"
         super().__init__()
 
 
 class PasswordPool(Pool):
     def __init__(self):
-        self._name = "password.txt"
+        self._name = "DataGenerator/password.txt"
         super().__init__()
 
 
