@@ -69,7 +69,8 @@ CREATE TABLE STAFF_SCHEDULE (
 );
 
 CREATE TABLE PATIENT (
-    Patient_id INTEGER REFERENCES GENERAL_USER(User_id),
+    User_id INTEGER REFERENCES GENERAL_USER(User_id),
+    Patient_id SERIAL UNIQUE,
     PRIMARY KEY (Patient_id)
 );
 
@@ -169,12 +170,13 @@ CREATE TABLE DISH_IN_MENU (
 CREATE TABLE DOCTOR (
     Doc_id SERIAL UNIQUE,
     W_staff_id INTEGER REFERENCES WORKING_STAFF(W_staff_id),
+    Room INTEGER,
     PRIMARY KEY (Doc_id)
 );
 
 CREATE TABLE DOCTOR_TEAM (
-    Doctor_team_id INTEGER,
-    doc_id INTEGER REFERENCES DOCTOR(doc_id),
+    Doctor_team_id SERIAL UNIQUE,
+    Doc_id INTEGER REFERENCES DOCTOR(Doc_id),
     PRIMARY KEY (Doctor_team_id)
 );
 
