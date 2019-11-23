@@ -75,7 +75,7 @@ class User:
                f"'{self.birth_date}', '{self.address}', " \
                f"{self.role}, '{self.password_hash}'," \
                f"NULL);\n" + \
-               (f"INSERT INTO {TABLE_BLOCKED} VALUES({self.user_id}, {self.blocked_by});\n" if self.blocked_by else "")
+               (f"INSERT INTO {TABLE_BLOCKED}  {VALUES_BLOCKED} VALUES({self.user_id}, {self.blocked_by});\n" if self.blocked_by else "")
 
 
 class Patient(User):
@@ -116,8 +116,8 @@ class Schedule:
         return schedule
 
     def sql(self):
-        return f"INSERT INTO {TABLE_SCHEDULE} VALUES(" \
-               f"{self.id}, {self.week_day}, '{self.start_time}', '{self.end_time}');\n"
+        return f"INSERT INTO {TABLE_SCHEDULE} {VALUES_SCHEDULE} VALUES(" \
+               f"{self.week_day}, '{self.start_time}', '{self.end_time}');\n"
 
 
 class WorkingStaff(User):
@@ -147,7 +147,7 @@ class WorkingStaff(User):
     def sql(self):
         new_sql = f"INSERT INTO {TABLE_WORKING_STAFF} {VALUES_WORKING_STAFF} VALUES(" \
                   f"{self.user_id}, {self.salary}, '{self.qualification}');\n"
-        schedule_sql = "".join([f"INSERT INTO {TABLE_STAFF_SCHEDULE} VALUES({self.working_staff_id}, {i});\n"
+        schedule_sql = "".join([f"INSERT INTO {TABLE_STAFF_SCHEDULE}  {VALUES_STAFF_SCHEDULE} VALUES({self.working_staff_id}, {i});\n"
                                 for i in self.schedule])
         return super(WorkingStaff, self).sql() + new_sql + schedule_sql
 
@@ -165,7 +165,8 @@ class Admin(WorkingStaff):
             user.specialize(Admin, admin_id=None)
 
     def sql(self):
-        new_sql = f"INSERT INTO {TABLE_ADMIN} VALUES();\n"
+        new_sql = f"INSERT INTO {TABLE_ADMIN} {VALUES_ADMIN} VALUES(" \
+                f"{self.working_staff_id});\n"
         return super(Admin, self).sql() + new_sql
 
 
@@ -326,7 +327,7 @@ class InvoiceBill:
         self.is_paid = is_paid_
 
     def sql(self):
-        return f"INSERT INTO {TABLE_INVOICE_BILL} VALUES(" \
+        return f"INSERT INTO {TABLE_INVOICE_BILL} {VALUES_INVOICE_BILL} VALUES(" \
                f"'{self.date}', {self.price}, {self.created_by}, {self.is_paid});\n"
 
 
@@ -337,7 +338,7 @@ class Prescription:
 
     def sql(self):
         medicals_sql = "".join([medical.sql() for medical in self.medicals])
-        return medicals_sql + f"INSERT INTO {TABLE_PRESCRIPTION} VALUES();\n"
+        return medicals_sql + f"INSERT INTO {TABLE_PRESCRIPTION} {VALUES_PRESCRIPTION} VALUES();\n"
 
 
 class MedicalRecord:
@@ -350,7 +351,7 @@ class MedicalRecord:
         self.prescription = None
 
     def sql(self):
-        return f"INSERT INTO {TABLE_MEDICAL_RECORD} VALUES(" \
+        return f"INSERT INTO {TABLE_MEDICAL_RECORD} {VALUES_MEDICAL_RECORD} VALUES(" \
                f"'{self.description}', '{self.date}', {self.appointment_id}, {self.created_by});\n"
 
     @staticmethod
@@ -418,8 +419,8 @@ class Appointment:
         return appointments
 
     def sql(self):
-        appointment_sql = f"INSERT INTO {TABLE_APPOINTMENT} VALUES(" \
-                          f"{self.room}, {self.type}, " \
+        appointment_sql = f"INSERT INTO {TABLE_APPOINTMENT} {VALUES_APPOINTMENT} VALUES(" \
+                          f" {self.room}, {self.type}, " \
                           f"'{self.start_time}', '{self.end_time}', {self.patient_id}, " \
                           f"{self.doctor_team_id}, {self.invoice_bill_id});\n"
         notif_sql = "".join([notif.sql() for notif in self.notifications])

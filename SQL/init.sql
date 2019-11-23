@@ -29,7 +29,7 @@ CREATE TABLE GENERAL_USER (
 );
 
 CREATE TABLE MESSAGE (
-    Message_id INTEGER NOT NULL,
+    Message_id SERIAL UNIQUE,
     Message_time TIMESTAMP WITH TIME ZONE NOT NULL, -- 'YYYY-MM-DD HH-MM-SS'
     Content VARCHAR(500),
     Sender_email INTEGER REFERENCES GENERAL_USER(User_id),
@@ -75,7 +75,7 @@ CREATE TABLE PATIENT (
 );
 
 CREATE TABLE TIME_SLOT (
-    Time_slot_id INTEGER,
+    Time_slot_id SERIAL UNIQUE,
     Day VARCHAR(15) NOT NULL,
     Start_time TIME NOT NULL,
     End_time TIME NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE ACCOUNTANT (
 );
 
 CREATE TABLE INVOICE_BILL (
-    Invoice_bill_id INTEGER NOT NULL,
+    Invoice_bill_id SERIAL UNIQUE,
     Invoice_date DATE NOT NULL,
     Price INTEGER NOT NULL,
     Created_by INTEGER REFERENCES ACCOUNTANT(Acc_id),
@@ -106,7 +106,7 @@ CREATE TABLE PHARMACIST (
 );
 
 CREATE TABLE MEDICAL_SUPPLY (
-    Med_supply_id INTEGER,
+    Med_supply_id SERIAL UNIQUE,
     Name VARCHAR(30) NOT NULL,
     Quantity INTEGER NOT NULL,
     PRIMARY KEY (Med_supply_id)
@@ -131,7 +131,7 @@ CREATE TABLE BLOCKED (
 );
 
 CREATE TABLE NOTICE (
-    Notice_id INTEGER,
+    Notice_id SERIAL UNIQUE,
     Title VARCHAR(50),
     Content VARCHAR(500),
     Notice_time TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -146,7 +146,7 @@ CREATE TABLE CANTEEN_STAFF (
 );
 
 CREATE TABLE MENU (
-    Menu_id INTEGER,
+    Menu_id SERIAL UNIQUE,
     Menu_date DATE NOT NULL,
     Type VARCHAR(30) NOT NULL,
     Published_by INTEGER REFERENCES ADMIN(Admin_id),
@@ -154,7 +154,7 @@ CREATE TABLE MENU (
 );
 
 CREATE TABLE DISH (
-    Dish_id INTEGER,
+    Dish_id SERIAL UNIQUE,
     Name VARCHAR(30) NOT NULL,
     Energy_value INTEGER NOT NULL,
     Components VARCHAR(60) NOT NULL,
@@ -200,12 +200,11 @@ CREATE TABLE NURSE_TASK (
 );
 
 CREATE TABLE APPOINTMENT (
-    Appointment_id INTEGER,
+    Appointment_id SERIAL UNIQUE,
     Room INTEGER NOT NULL,
     Type INTEGER NOT NULL,
     Start_time TIMESTAMP WITH TIME ZONE NOT NULL,
     End_time TIMESTAMP WITH TIME ZONE NOT NULL,
-    Time_slot_id INTEGER REFERENCES TIME_SLOT(Time_slot_id),
     Patient_id INTEGER REFERENCES PATIENT(Patient_id),
     Doctor_team_id INTEGER REFERENCES DOCTOR_TEAM(Doctor_team_id),
     Invoice_bill_id INTEGER REFERENCES INVOICE_BILL(Invoice_bill_id),
@@ -222,7 +221,7 @@ CREATE TABLE MEDICAL_RECORD (
 );
 
 CREATE TABLE PRESCRIPTION (
-    Prescription_id INTEGER,
+    Prescription_id SERIAL UNIQUE,
     Medicals VARCHAR(50) NOT NULL,
     Med_rec_id INTEGER REFERENCES MEDICAL_RECORD(Med_rec_id),
     PRIMARY KEY (Prescription_id)
