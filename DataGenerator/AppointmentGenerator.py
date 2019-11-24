@@ -1,7 +1,8 @@
 import random
 
-from DataGenerator.Type import Patient, Appointment
+
 from DataGenerator.config import *
+from DataGenerator.type import Patient, Appointment
 
 
 def generate(users, dteams):

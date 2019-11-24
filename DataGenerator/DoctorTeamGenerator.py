@@ -1,4 +1,4 @@
-from DataGenerator.Type import DoctorTeam
+from DataGenerator.type import DoctorTeam
 from DataGenerator.config import DOCTOR_NUMBER
 
 

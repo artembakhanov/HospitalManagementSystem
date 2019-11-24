@@ -1,4 +1,4 @@
-from DataGenerator.Type import Patient, Doctor, Nurse, Pharmacist, Accountant, Admin
+from DataGenerator.type import Patient, Doctor, Nurse, Pharmacist, Accountant, Admin
 from DataGenerator.config import DOCTOR_NUMBER, PATIENT_NUMBER, NURSE_NUMBER, PHARMACIST_NUMBER, ACCOUNTANT_NUMBER, \
     ADMIN_NUMBER
 
