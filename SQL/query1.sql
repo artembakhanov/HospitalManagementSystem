@@ -1,6 +1,12 @@
-SELECT *
+SELECT doctor_team_id
 FROM
 	appointment
+NATURAL JOIN
+    patient
+NATURAL JOIN
+   doctor_team
+NATURAL JOIN
+   doctor
 WHERE
 	start_time = (
 		SELECT MAX(start_time)

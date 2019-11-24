@@ -6,7 +6,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 from DataGenerator import UserGenerator, DoctorTeamGenerator, AppointmentGenerator
-from DataGenerator.type import Doctor, Schedule
+from DataGenerator.type import Doctor, Schedule, GeneralPool
 
 
 class DataGenerator:
@@ -35,6 +35,8 @@ class DataGenerator:
         print("nurses teams have been generated")
         self._generate_appointments(self.users)
         print("appointments have been generated")
+
+        GeneralPool().reset()
         return self.sql
 
     def _generate_users(self):
@@ -54,7 +56,7 @@ class DataGenerator:
 
     def _generate_nurses(self):
         self.nurses = UserGenerator.generate_nurses()
-        self.sql.extend([user.sql() for user in self.users])
+        self.sql.extend([nurse.sql() for nurse in self.nurses])
 
     def _generate_appointments(self, users):
         """

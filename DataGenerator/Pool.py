@@ -169,6 +169,15 @@ class GeneralPool(Singleton):
         """
         return self.__getattribute__(f"_{name.lower()}pool").get()
 
+    def reset(self):
+        super().__init__()
+        subs = inheritors(Pool)
+        for sub in subs:
+            # print(sub)
+            name = "_" + sub.__name__.lower()
+            self.__setattr__(name, sub())
+            self.__getattribute__(name)._initialized = False
+
 
 if __name__ == "__main__":
     sos = GeneralPool()
