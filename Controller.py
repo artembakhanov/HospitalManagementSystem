@@ -38,6 +38,7 @@ class Controller:
             self.table = View.ResultTable()
             self.table.fill(result)
             self.table.show()
+        print(result)
 
     def query1(self):
         self.main_window.textEdit.setText(QUERY1)

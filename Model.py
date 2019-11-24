@@ -23,6 +23,7 @@ class SQL:
             self.reconnect_to_db()
 
         print('Connected successfully')
+        self.generate_data()
 
     def process_query(self, query):
         """Takes an SQL query and processes it"""
