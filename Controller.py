@@ -38,9 +38,9 @@ class Controller:
         result = self.sql_db.process_query(text)
 
         if not result.is_error:
-            # Снизу закомменченный шаблон для вывода таблицы
             self.table = View.ResultTable()
             self.table.fill(result)
+            self.table.resize(1920, 1080)
             self.table.show()
         else:
             self.main_window.error_dialog_box(str(result.exception))
