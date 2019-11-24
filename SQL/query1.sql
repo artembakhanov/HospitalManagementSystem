@@ -23,7 +23,8 @@ FROM
 	doctor_team NATURAL JOIN doctor NATURAL JOIN working_staff NATURAL JOIN general_user
 WHERE
 	doctor_team_id = (SELECT doctor_team_id FROM dt_id)
-		and
-		((
-		fname SIMILAR TO 'L|M%' and lname NOT SIMILAR TO 'L|M%')
-		or (fname NOT SIMILAR TO 'L|M%' and lname SIMILAR TO 'L|M%'));
+		AND
+		(
+            (fname SIMILAR TO '(L|M)%' AND lname NOT SIMILAR TO '(L|M)%') OR
+            (fname NOT SIMILAR TO '(L|M)%' AND lname SIMILAR TO '(L|M)%')
+		);
