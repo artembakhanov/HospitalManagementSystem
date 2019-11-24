@@ -1,3 +1,10 @@
+from os.path import dirname
+from pathlib import Path
+
+# WARNING! AUTO-GENERATED CONSTANTS! DO NOT CHANGE THEM!
+PATH = Path(dirname(__file__))
+
+# User-specified constants
 PATIENT_NUMBER = 100
 DOCTOR_NUMBER = 10
 NURSE_NUMBER = 20
@@ -17,3 +24,12 @@ MIN_ROOM_NUMBER = 100
 MAX_ROOM_NUMBER = 500
 START_BIRTHDATE_YEAR = 1935
 END_BIRTHDATE_YEAR = HOSPITAL_START_YEAR - 1
+
+DATASETS_FOLDER = PATH / "datasets"
+
+ADDRESS_SET_FILE = DATASETS_FOLDER / "address.txt"
+FNAME_SET_FILE = DATASETS_FOLDER / "first_names.all.txt"
+LNAME_SET_FILE = DATASETS_FOLDER / "last_names.all.txt"
+EMAIL_SET_FILE = DATASETS_FOLDER / "email.txt"
+PHONE_SET_FILE = DATASETS_FOLDER / "phone.txt"
+PASSWORD_SET_FILE = DATASETS_FOLDER / "password.txt"

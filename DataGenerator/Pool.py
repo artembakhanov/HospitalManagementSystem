@@ -70,37 +70,37 @@ class AddressPool(Pool):
     """
 
     def __init__(self):
-        self._name = "DataGenerator/address.txt"
+        self._name = ADDRESS_SET_FILE
         super().__init__()
 
 
 class FNamePool(Pool):
     def __init__(self):
-        self._name = "DataGenerator/first_names.all.txt"
+        self._name = FNAME_SET_FILE
         super().__init__()
 
 
 class LNamePool(Pool):
     def __init__(self):
-        self._name = "DataGenerator/last_names.all.txt"
+        self._name = LNAME_SET_FILE
         super().__init__()
 
 
 class EmailPool(Pool):
     def __init__(self):
-        self._name = "DataGenerator/email.txt"
+        self._name = EMAIL_SET_FILE
         super().__init__()
 
 
 class PhonePool(Pool):
     def __init__(self):
-        self._name = "DataGenerator/phone.txt"
+        self._name = PHONE_SET_FILE
         super().__init__()
 
 
 class PasswordPool(Pool):
     def __init__(self):
-        self._name = "DataGenerator/password.txt"
+        self._name = PASSWORD_SET_FILE
         super().__init__()
 
 
@@ -173,4 +173,5 @@ class GeneralPool(Singleton):
 if __name__ == "__main__":
     sos = GeneralPool()
     sos1 = GeneralPool()
+
     print(sos.get("email"))

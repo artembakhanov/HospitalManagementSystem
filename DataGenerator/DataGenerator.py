@@ -30,8 +30,9 @@ class DataGenerator:
         self._generate_users()  # without nurses
         print("users have been generated")
         self._generate_doctor_teams()
-        print("doctors have been generated")
-
+        print("doctors teams have been generated")
+        self._generate_nurses()
+        print("nurses teams have been generated")
         self._generate_appointments(self.users)
         print("appointments have been generated")
         return self.sql
@@ -75,6 +76,6 @@ class DataGenerator:
 
 
 if __name__ == "__main__":
-    f = open("insertion.txt", "w+")
+    f = open("insertion.txt", "w+", encoding="utf-8")
     for x in DataGenerator().generate():
         f.write(x)

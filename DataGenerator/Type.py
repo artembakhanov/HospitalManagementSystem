@@ -138,7 +138,7 @@ class WorkingStaff(User):
             user.role += 0  # todo: cock
             user.specialize(WorkingStaff,
                             working_staff_id=pool.get("WorkingStaffID"),
-                            salary=1000,
+                            salary=None,
                             schedule=[1, 2, 3, 4, 5],
                             qualification=f"Qualification {random.randint(1, 500)}",
                             # this is really interesting kostyl, text me if you can not get it
@@ -226,7 +226,10 @@ class Accountant(WorkingStaff):
         pool = GeneralPool()
         users = super(Accountant, Accountant).generate(n)
         for user in users:
-            user.specialize(Accountant, accountant_id=user.user_id, license_id=pool.get("AccountantLicense"))
+            user.specialize(Accountant,
+                            accountant_id=user.user_id,
+                            license_id=pool.get("AccountantLicense"),
+                            salary=random.randint(4, 5) * 250)
         return users
 
     def sql(self):
@@ -246,8 +249,8 @@ class Pharmacist(WorkingStaff):
         pool = GeneralPool()
         users = super(Pharmacist, Pharmacist).generate(n)
         for user in users:
-            user.specialize(Accountant, pharmacist_id=user.user_id, license_id=pool.get("PharmacistLicense"),
-                            salary=random.randint(1, 10) * 200)
+            user.specialize(Pharmacist, pharmacist_id=user.user_id, license_id=pool.get("PharmacistLicense"),
+                            salary=random.randint(5, 10) * 200)
         return users
 
     def sql(self):
@@ -302,7 +305,8 @@ class DoctorTeam:
             if 0 <= cur.weekday() <= 4:
                 for i in range(MAX_SLOTS_PER_DAY):
                     start_time = cur + i * datetime.timedelta(minutes=SLOT_DURATION)
-                    pool.data.append(TimeSlot(doctor_team_id, start_time, start_time + datetime.timedelta(minutes=15), doctor.room))
+                    pool.data.append(
+                        TimeSlot(doctor_team_id, start_time, start_time + datetime.timedelta(minutes=15), doctor.room))
             cur += datetime.timedelta(days=1)
 
     def sql(self):
@@ -407,7 +411,6 @@ class Appointment:
             app.patient_id = patient.patient_id
             app.room = slot.room
 
-
             # generate notifications for the appointment
             notif_time = app.start_time - datetime.timedelta(minutes=15)
             title = APPOINTMENT_NOTIFICATION_TITLE
@@ -430,8 +433,8 @@ class Appointment:
                           f" {self.room}, {self.type}, " \
                           f"'{self.start_time}', '{self.end_time}', {self.patient_id}, " \
                           f"{self.doctor_team_id}, {self.invoice_bill_id});\n"
-        notif_sql = "".join([notif.sql() for notif in self.notifications])
-        inv_bill_sql = "".join([inv.sql() for inv in self.invoice_bills])
-        mr_sql = "".join([mr.sql() for mr in self.medical_records])
+        notification_sql = "".join([notif.sql() for notif in self.notifications])
+        invoice_bill_sql = "".join([inv.sql() for inv in self.invoice_bills])
+        medical_record_sql = "".join([mr.sql() for mr in self.medical_records])
 
-        return notif_sql + inv_bill_sql + appointment_sql + mr_sql
+        return notification_sql + invoice_bill_sql + appointment_sql + medical_record_sql
