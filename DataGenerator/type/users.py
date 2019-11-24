@@ -46,7 +46,7 @@ class User:
         users = []
         for i in range(n):
             user = User()
-            user.user_id = i + 1
+            user.user_id = pool.get("UserID")
             user.email = pool.get("email")
             user.fname = pool.get("fname").capitalize()  # todo: capitalize it
             user.lname = pool.get("lname").capitalize()
