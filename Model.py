@@ -9,9 +9,7 @@ from static import DATABASE_NAME, DATABASE_LOGIN, DATABASE_PASSWORD, CREATE_TABL
 
 class SQL:
     def __init__(self):
-        # connect to DB
-        # АРТЕМ ПОМЕНЯЙ ЭТО НА КОННЕКТ ТУ ДАМБ
-        # Я ПОМЕНЯЮ СПАСИБО
+        # connect to postgres
         self.conn = psycopg2.connect(
             user=DATABASE_LOGIN,
             password=DATABASE_PASSWORD
@@ -29,13 +27,6 @@ class SQL:
     def process_query(self, query):
         """Takes an SQL query and processes it"""
         cur = self.conn.cursor()
-
-        # в query хранится текст, который юзер ввел
-        # заимплементь функцию
-
-        # внизу пример того, как я со своей дб таблицу считывал
-
-        rows = []
         result = QueryResult.QueryResult()
         try:
             cur.execute(query)
@@ -44,8 +35,6 @@ class SQL:
         except Exception as e:
             result.is_error = True
             result.exception = e
-
-        print(result)
         return result
 
     def insert_random_data(self):

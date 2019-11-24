@@ -33,8 +33,6 @@ class Controller:
 
         result = self.sql_db.process_query(text)
 
-        # дальше, смотря какой резалт, что-то делаем (либо ашыбка, либо таблица)
-
         if not result.is_error:
             # Снизу закомменченный шаблон для вывода таблицы
             self.table = View.ResultTable()
