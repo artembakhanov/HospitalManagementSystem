@@ -38,6 +38,9 @@ class Controller:
             self.table = View.ResultTable()
             self.table.fill(result)
             self.table.show()
+        else:
+            self.main_window.error_dialog_box(str(result.exception))
+            
         print(result)
 
     def query1(self):
