@@ -1,6 +1,5 @@
 from PyQt5.QtWidgets import *
 from PyQt5.uic.uiparser import QtCore
-
 import design
 
 
@@ -30,8 +29,7 @@ class ResultTable(QMainWindow):
             table_row = self.table_widget.rowCount()
             self.table_widget.setRowCount(table_row + 1)
             for i in range(len(row)):
-                item = QTableWidgetItem(str(row[i]))
-                self.table_widget.setItem(table_row, i, item)
+                self.table_widget.setItem(table_row, i, QTableWidgetItem(str(row[i])))
         # for id_, name, price in [(1, 'a', 23), (2, 'b', 24)]:
         #     row = self.table_widget.rowCount()
         #     self.table_widget.setRowCount(row + 1)

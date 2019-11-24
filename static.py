@@ -52,6 +52,10 @@ DATABASE_NAME = 'test10'
 DATABASE_LOGIN = 'postgres'
 DATABASE_PASSWORD = 'root1234'
 DATABASE_SCHEMA_FILE = PATH / "SQL" / "init.sql"
+QUERY1_FILE = PATH / "SQL" / "query1.sql"
 
 with open(DATABASE_SCHEMA_FILE, encoding="utf-8") as f:
     CREATE_TABLES = f.read()
+
+with open(QUERY1_FILE, encoding="utf-8") as f:
+    QUERY1 = f.read()
