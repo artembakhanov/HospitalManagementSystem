@@ -1,5 +1,7 @@
 import sys
 
+from PyQt5.QtCore import QPointF
+
 import Model
 import View
 from static import QUERY1, QUERY2, QUERY3, QUERY4, QUERY5
@@ -45,7 +47,7 @@ class Controller:
         else:
             self.main_window.error_dialog_box(str(result.exception))
             
-        print(result)
+        # print(result)
 
     def query1(self):
         self.main_window.textEdit.setText(QUERY1)
