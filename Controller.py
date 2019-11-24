@@ -1,7 +1,7 @@
 import sys
-import View
+
 import Model
-import DataGenerator.DataGenerator
+import View
 
 
 class Controller:
@@ -20,7 +20,6 @@ class Controller:
 
         # Executing the app
         self.app.exec_()
-
 
     def Generate_data(self):
         self.sql_db.generate_data()
