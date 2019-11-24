@@ -1,10 +1,3 @@
-from os.path import dirname
-from pathlib import Path
-
-# WARNING! AUTO-GENERATED CONSTANTS! DO NOT CHANGE THEM!
-PATH = Path(dirname(__file__))
-
-# CONSTANTS
 TABLE_USER = "GENERAL_USER"
 TABLE_PATIENT = "PATIENT"
 TABLE_WORKING_STAFF = "WORKING_STAFF"
@@ -48,6 +41,7 @@ ROLE_ACCOUNTANT = 16
 ROLE_PHARMACIST = 32
 ROLE_CANTEEN_STAFF = 64
 ROLE_ADMIN = 128
+<<<<<<< HEAD
 DATABASE_NAME = 'test10'
 DATABASE_LOGIN = 'postgres'
 DATABASE_PASSWORD = 'root1234'
@@ -59,3 +53,8 @@ with open(DATABASE_SCHEMA_FILE, encoding="utf-8") as f:
 
 with open(QUERY1_FILE, encoding="utf-8") as f:
     QUERY1 = f.read()
+=======
+DATABASE_NAME = "test10"
+DATABASE_LOGIN = "postgres"
+DATABASE_PASSWORD = "root1234"
+>>>>>>> parent of 95813c6... Add working table
