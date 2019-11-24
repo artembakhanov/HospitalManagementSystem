@@ -74,14 +74,6 @@ CREATE TABLE PATIENT (
     PRIMARY KEY (Patient_id)
 );
 
-CREATE TABLE TIME_SLOT (
-    Time_slot_id SERIAL UNIQUE,
-    Day VARCHAR(15) NOT NULL,
-    Start_time TIME NOT NULL,
-    End_time TIME NOT NULL,
-    PRIMARY KEY (Time_slot_id)
-);
-
 CREATE TABLE ACCOUNTANT (
     Acc_id SERIAL UNIQUE,
     License_id INTEGER NOT NULL,
