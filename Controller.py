@@ -34,9 +34,9 @@ class Controller:
         # дальше, смотря какой резалт, что-то делаем (либо ашыбка, либо таблица)
 
         # Снизу закомменченный шаблон для вывода таблицы
-        # self.table = View.ResultTable()
-        # self.table.fill()
-        # self.table.show()
+        self.table = View.ResultTable()
+        self.table.fill(result)
+        self.table.show()
 
 
 if __name__ == "__main__":
