@@ -12,16 +12,14 @@ class SQL:
         # connect to DB
         # АРТЕМ ПОМЕНЯЙ ЭТО НА КОННЕКТ ТУ ДАМБ
         # Я ПОМЕНЯЮ СПАСИБО
-        self.conn = psycopg2.connect(
-            user=DATABASE_LOGIN,
-            password=DATABASE_PASSWORD
-        )
+        self.reconnect_to_server()
 
         self.conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
         if not self.db_exist():
             self.create_or_reset_db()
         else:
+
             self.reconnect_to_db()
 
         print('Connected successfully')
@@ -64,7 +62,6 @@ class SQL:
             f.close()
             cur.execute(x)
 
-        self.conn.commit()
         print("Committed successfully.")
 
         cur.close()
@@ -84,12 +81,12 @@ class SQL:
         self.conn.autocommit = True
 
     def reconnect_to_server(self):
-        self.conn.commit()
         self.conn = psycopg2.connect(
             user=DATABASE_LOGIN,
             password=DATABASE_PASSWORD
         )
         self.conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+        self.conn.autocommit = True
 
     def create_or_reset_db(self):
         self.reconnect_to_server()

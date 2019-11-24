@@ -7,6 +7,9 @@ class App(QMainWindow, design.Ui_MainWindow):
         super().__init__()
         self.ui = self.setupUi(self)
 
+    def error_dialog_box(self, exception):
+        QMessageBox.about(self, "Exception", exception)
+
 
 class ResultTable(QMainWindow):
     def __init__(self):
@@ -15,6 +18,10 @@ class ResultTable(QMainWindow):
 
         self.table_widget = QTableWidget()
         self.setCentralWidget(self.table_widget)
+
+        self.move(QDesktopWidget().availableGeometry().center() - self.frameGeometry().center())
+        #self.setWindowState(design.QtCore.Qt.WindowFullScreen)
+
 
     def fill(self, result):
         self.table_widget.clear()

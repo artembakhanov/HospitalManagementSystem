@@ -40,6 +40,8 @@ class Controller:
             self.table = View.ResultTable()
             self.table.fill(result)
             self.table.show()
+        else:
+            self.main_window.error_dialog_box(str(result.exception))
 
     def query1(self):
         self.main_window.textEdit.setText(QUERY1)
