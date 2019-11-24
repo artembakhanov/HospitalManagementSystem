@@ -43,7 +43,7 @@ class WorkingStaff(User):
         pool = GeneralPool()
         users = super(WorkingStaff, WorkingStaff).generate(n)
         for i, user in enumerate(users):
-            user.role += 0  # todo: cock
+            user.role += ROLE_WORKING_STAFF  # todo: cock
             user.specialize(WorkingStaff,
                             working_staff_id=pool.get("WorkingStaffID"),
                             salary=None,
@@ -73,6 +73,7 @@ class Admin(WorkingStaff):
         users = super(Admin, Admin).generate(n)
         pool = GeneralPool()
         for user in users:
+            user.role += ROLE_ADMIN
             user.specialize(Admin, admin_id=None, salary=random.randint(4, 10) * 250)
         return users
 
@@ -93,6 +94,7 @@ class Doctor(WorkingStaff):
         users = super(Doctor, Doctor).generate(n)
         pool = GeneralPool()
         for user in users:
+            user.role += ROLE_DOCTOR
             user.specialize(Doctor, doctor_id=user.user_id, salary=random.randint(40, 120) * 50,
                             qualification=f"Qualification {random.randint(1, 50)}", room=pool.get("DoctorRoom"))
         return users
@@ -113,6 +115,7 @@ class Nurse(WorkingStaff):
     def generate(n):
         users = super(Nurse, Nurse).generate(n)
         for user in users:
+            user.role += ROLE_NURSE
             user.specialize(Nurse, doctor_id=user.user_id, doctor_team=random.randint(1, DOCTOR_NUMBER),
                             salary=random.randint(40, 120) * 50)
         return users
@@ -134,6 +137,7 @@ class Accountant(WorkingStaff):
         pool = GeneralPool()
         users = super(Accountant, Accountant).generate(n)
         for user in users:
+            user.role += ROLE_ACCOUNTANT
             user.specialize(Accountant,
                             accountant_id=user.user_id,
                             license_id=pool.get("AccountantLicense"),
@@ -157,6 +161,7 @@ class Pharmacist(WorkingStaff):
         pool = GeneralPool()
         users = super(Pharmacist, Pharmacist).generate(n)
         for user in users:
+            user.role += ROLE_PHARMACIST
             user.specialize(Pharmacist, pharmacist_id=user.user_id, license_id=pool.get("PharmacistLicense"),
                             salary=random.randint(5, 10) * 200)
         return users

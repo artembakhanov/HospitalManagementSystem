@@ -81,3 +81,4 @@ if __name__ == "__main__":
     f = open("insertion.txt", "w+", encoding="utf-8")
     for x in DataGenerator().generate():
         f.write(x)
+    f.close()

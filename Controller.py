@@ -33,8 +33,6 @@ class Controller:
 
         result = self.sql_db.process_query(text)
 
-        # дальше, смотря какой резалт, что-то делаем (либо ашыбка, либо таблица)
-
         if not result.is_error:
             # Снизу закомменченный шаблон для вывода таблицы
             self.table = View.ResultTable()
@@ -42,6 +40,8 @@ class Controller:
             self.table.show()
         else:
             self.main_window.error_dialog_box(str(result.exception))
+            
+        print(result)
 
     def query1(self):
         self.main_window.textEdit.setText(QUERY1)
