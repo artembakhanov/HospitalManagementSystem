@@ -1,5 +1,4 @@
 from PyQt5.QtWidgets import *
-from PyQt5.uic.uiparser import QtCore
 import design
 
 

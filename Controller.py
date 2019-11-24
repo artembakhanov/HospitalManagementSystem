@@ -15,8 +15,7 @@ class Controller:
         # Adding functionality to buttons
         self.main_window.exe_button.clicked.connect(self.SQL_query)  # "Execute" button
         self.main_window.gen_data_button.clicked.connect(self.Generate_data)  # "Generate data" button
-
-        # self.main_window.def_q1_button.clicked.connect(self.query1)
+        self.main_window.def_q1_button.clicked.connect(self.query1)
 
         # Connecting to SQL DB
         self.sql_db = Model.SQL()
@@ -36,7 +35,6 @@ class Controller:
 
         # дальше, смотря какой резалт, что-то делаем (либо ашыбка, либо таблица)
 
-<<<<<<< HEAD
         if not result.is_error:
             # Снизу закомменченный шаблон для вывода таблицы
             self.table = View.ResultTable()
@@ -45,12 +43,6 @@ class Controller:
 
     def query1(self):
         self.main_window.textEdit.setText(QUERY1)
-=======
-        # Снизу закомменченный шаблон для вывода таблицы
-        # self.table = View.ResultTable()
-        # self.table.fill()
-        # self.table.show()
->>>>>>> parent of 95813c6... Add working table
 
 
 if __name__ == "__main__":
