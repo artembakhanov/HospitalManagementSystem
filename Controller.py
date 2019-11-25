@@ -30,7 +30,7 @@ class Controller:
         self.app.exec_()
 
     def Generate_data(self):
-        self.sql_db.generate_data()
+        self.sql_db.populate_database()
 
     def SQL_query(self):
         """Reads the input from Text Field and either outputs the requested query in form of a table

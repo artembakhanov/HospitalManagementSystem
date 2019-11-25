@@ -52,6 +52,7 @@ class SQL:
         """
         Populate database with random data.
         """
+        self.create_or_reset_db()
         cur = self.conn.cursor()
         # generate queries
         queries = DataGenerator().generate()
@@ -72,9 +73,9 @@ class SQL:
         cur = self.conn.cursor()
         queries = DataGenerator().generate()
         for x in queries:
-            f = open('insertion.sql', 'w', encoding='utf-8')
-            f.write(x)
-            f.close()
+            # f = open('insertion.sql', 'w', encoding='utf-8')
+            # f.write(x)
+            # f.close()
             cur.execute(x)
 
         print("Committed successfully.")

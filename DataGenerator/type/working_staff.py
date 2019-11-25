@@ -71,7 +71,6 @@ class Admin(WorkingStaff):
     @staticmethod
     def generate(n):
         users = super(Admin, Admin).generate(n)
-        pool = GeneralPool()
         for user in users:
             user.role += ROLE_ADMIN
             user.specialize(Admin, admin_id=None, salary=random.randint(4, 10) * 250)

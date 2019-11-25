@@ -88,8 +88,9 @@ class Appointment:
             app.start_time = slot.start
             app.end_time = slot.end
             app.doctor_team_id = slot.doctor_team_id
-            app.patient_id = patient.patient_id
             app.room = slot.room
+
+            app.patient_id = patient.patient_id
 
             # generate notifications for the appointment
             notif_time = app.start_time - datetime.timedelta(minutes=15)

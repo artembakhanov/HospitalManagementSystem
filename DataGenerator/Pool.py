@@ -22,6 +22,10 @@ def inheritors(cls):
 
 
 class Singleton:
+    """
+    Abstract class that allows to crerate only one
+    instance of a class in run time.
+    """
     _initialized = False
 
     def __new__(cls, *args, **kwargs):
@@ -36,13 +40,19 @@ class Singleton:
         return cls.instance
 
     def __init__(self):
-        if self._initialized: return
-        self._initialized = True
+        if not self._initialized:
+            self._initialized = True
 
 
 class Pool(Singleton):
+    """
+    An abstract class that represents a pool of some values.
+
+    It is a singleton because the pool can be generated
+    from several parts.
+    """
     _name = None
-    _data = None
+    _data = None  # data are stored here
 
     def __init__(self):
         if not self._initialized:
@@ -54,7 +64,7 @@ class Pool(Singleton):
         with open(self._name, 'r', encoding='utf-8') as f:
             return f.read().splitlines()
 
-    def get(self, n: int = 1):
+    def get(self):
         return None if len(self._data) == 0 else self._data.pop()
 
     def init_data(self):
