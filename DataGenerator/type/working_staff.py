@@ -4,8 +4,8 @@ import random
 from DataGenerator.DateGenerator import gen_datetime
 from DataGenerator.Pool import GeneralPool
 from DataGenerator.config import *
+from DataGenerator.static import *
 from DataGenerator.type import User
-from static import *
 
 
 class Schedule:

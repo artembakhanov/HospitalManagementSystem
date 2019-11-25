@@ -5,7 +5,7 @@ from DataGenerator.Pool import GeneralPool
 from DataGenerator.config import *
 from DataGenerator.type.doctors import DoctorTeam
 from DataGenerator.type.notifications import Notification
-from static import *
+from DataGenerator.static import *
 
 
 class InvoiceBill:

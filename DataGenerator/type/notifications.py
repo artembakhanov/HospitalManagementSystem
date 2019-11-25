@@ -1,10 +1,4 @@
-import datetime
-import random
-
-from DataGenerator.DateGenerator import gen_datetime
-from DataGenerator.Pool import GeneralPool, SlotPool
-from DataGenerator.config import *
-from static import *
+from DataGenerator.static import *
 
 
 class Notification:

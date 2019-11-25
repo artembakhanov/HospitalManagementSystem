@@ -3,7 +3,7 @@ import random
 
 from DataGenerator.Pool import SlotPool
 from DataGenerator.config import *
-from static import *
+from DataGenerator.static import *
 
 
 class TimeSlot:

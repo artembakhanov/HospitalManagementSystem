@@ -5,7 +5,7 @@ from pathlib import Path
 PATH = Path(dirname(__file__))
 
 # User-specified constants
-PATIENT_NUMBER = 20
+PATIENT_NUMBER = 30
 DOCTOR_NUMBER = 50
 NURSE_NUMBER = 50
 ADMIN_NUMBER = 10
