@@ -1,19 +1,20 @@
-WITH a1 AS (
-		SELECT doc_id, COUNT(appointment_id) AS num, EXTRACT(YEAR FROM start_time) AS yea
-		FROM 	appointment NATURAL JOIN
-				doctor_team NATURAL JOIN
-				doctor
-		WHERE
-				type = 1 AND
-				start_time BETWEEN CURRENT_DATE - INTERVAL '10 year' AND CURRENT_DATE
-		GROUP BY
-				doc_id, yea
-		HAVING
-				COUNT(appointment_id) >= 5
-		ORDER BY
-				doc_id, yea
+WITH
+a1 AS (
+	SELECT
+		floor(extract( day from current_date - start_time) / 365) as yea,
+		doc_id,
+		COUNT(appointment_id) AS num
+	FROM
+		appointment NATURAL JOIN doctor_team NATURAL JOIN doctor
+	WHERE
+		start_time BETWEEN CURRENT_DATE - interval '3650 day' AND CURRENT_DATE
+	GROUP BY
+		yea, doc_id
+	HAVING
+		COUNT(appointment_id) >= 5
+	ORDER BY
+		doc_id, yea
 )
-
 SELECT
 		doc_id, fname, lname
 FROM
