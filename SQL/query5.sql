@@ -7,6 +7,7 @@ a1 AS (
 	FROM
 		appointment NATURAL JOIN doctor_team NATURAL JOIN doctor
 	WHERE
+	    type = 1 AND
 		start_time BETWEEN CURRENT_DATE - interval '3650 day' AND CURRENT_DATE
 	GROUP BY
 		yea, doc_id
