@@ -1,5 +1,3 @@
--- Written by DrYJlkO4kI PiRoJlKo4Ki
-
 WITH p_id AS (
         SELECT patient_id
         FROM general_user NATURAL JOIN patient
