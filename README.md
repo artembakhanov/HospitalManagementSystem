@@ -25,7 +25,7 @@ cd ./HospitalManagementSystem
 ```
 3. Install dependencies
 ```shell script
-pip3 install -r requirements.py
+sudo pip3 install -r requirements.txt
 ```
 4. Enter your credentials in [`config.py`](config.py)
 ```python
