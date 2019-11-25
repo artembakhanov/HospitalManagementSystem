@@ -41,10 +41,10 @@ DATABASE_NAME = "name"
 python3 Controller.py
 ```
 
-## Advanced
+### Advanced
 You can also edit the config file [`DataGenerator/config.py`](DataGenerator/config.py) if you want to change parameters of the database population algorithm.
 
-## Contributing
+### Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -54,11 +54,11 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/yourFeature`)
 5. Open a Pull Request
 
-## License
+### License
 
 Distributed under the GNU General Public License v3.0. See [`LICENSE`](LICENSE) for more information.
 
-## Developed by
+### Developed by
 
 1. [@artembakhanov](https://github.com/artembakhanov)
 2. [@TooTiredOne](https://github.com/TooTiredOne)
