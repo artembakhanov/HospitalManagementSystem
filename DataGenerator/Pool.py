@@ -23,8 +23,8 @@ def inheritors(cls):
 
 class Singleton:
     """
-    Abstract class that allows to crerate only one
-    instance of a class in run time.
+    Abstract class that allows to create only
+    one instance of a class in run time.
     """
     _initialized = False
 
@@ -48,8 +48,9 @@ class Pool(Singleton):
     """
     An abstract class that represents a pool of some values.
 
-    It is a singleton because the pool can be generated
-    from several parts.
+    It is a singleton because the pool can be created
+    from several parts of code and it needs to be
+    the only one instance (data need to be unique).
     """
     _name = None
     _data = None  # data are stored here
@@ -73,11 +74,6 @@ class Pool(Singleton):
 
 
 class AddressPool(Pool):
-    """
-    This is a singleton that stores all available emails.
-    Emails are static and were generated with some script.
-    They are stored in a file (one email on a single line).
-    """
 
     def __init__(self):
         self._name = ADDRESS_SET_FILE
@@ -85,12 +81,14 @@ class AddressPool(Pool):
 
 
 class FNamePool(Pool):
+
     def __init__(self):
         self._name = FNAME_SET_FILE
         super().__init__()
 
 
 class LNamePool(Pool):
+
     def __init__(self):
         self._name = LNAME_SET_FILE
         super().__init__()
@@ -130,6 +128,11 @@ class AppointmentIDPool(Pool):
 
 
 class LicensePool(Pool):
+    """
+    An abstract pool that is used to generate
+    different types of licenses.
+    """
+
     def init_data(self):
         self._data = [i for i in range(10 ** 5, 10 ** 6)]
         shuffle(self._data)
@@ -144,6 +147,10 @@ class PharmacistLicensePool(LicensePool):
 
 
 class SlotPool(Pool):
+    """
+    Slot pool. Be careful:
+    is is used with side-effects.
+    """
     data = []
     _data = data
 
@@ -161,11 +168,22 @@ class DoctorRoomPool(Pool):
 
 
 class GeneralPool(Singleton):
+    """
+    It is a pool that unifies all the possible pools.
+
+    They are instantiated automatically and used as
+    a private attributes. In order to get some data
+    use get(str), where str - what you want to get.
+    """
+
     def __init__(self):
         super().__init__()
+
+        # get all pools
         subs = inheritors(Pool)
+
         for sub in subs:
-            # print(sub)
+            # create instance of a pool and set it as an attribute
             self.__setattr__("_" + sub.__name__.lower(), sub())
 
     def get(self, name):
@@ -180,6 +198,14 @@ class GeneralPool(Singleton):
         return self.__getattribute__(f"_{name.lower()}pool").get()
 
     def reset(self):
+        """
+        Reset the general pool.
+
+        It means that all the data are generated (or read) again.
+        After calling this function do not use generated data with
+        what you generated before calling it. It is GUARANTEED that
+        the data are NOT unique.
+        """
         super().__init__()
         subs = inheritors(Pool)
         for sub in subs:
