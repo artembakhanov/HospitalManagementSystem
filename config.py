@@ -1,3 +1,3 @@
 DATABASE_NAME = "hospital"
 DATABASE_LOGIN = "postgres"
-DATABASE_PASSWORD = "root1234"
+DATABASE_PASSWORD = "kelv89qqq"
