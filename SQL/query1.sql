@@ -3,7 +3,7 @@
 WITH p_id AS (
         SELECT patient_id
         FROM general_user NATURAL JOIN patient
-	    WHERE email = 'mbates@bullock.com'
+	    WHERE email = 'mbates@bullock.com' AND gender = 'F'
      ),
 	dt_id AS (
 	SELECT doctor_team_id
