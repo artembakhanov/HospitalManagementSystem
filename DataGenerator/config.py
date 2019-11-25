@@ -1,9 +1,3 @@
-from os.path import dirname
-from pathlib import Path
-
-# WARNING! AUTO-GENERATED CONSTANTS! DO NOT CHANGE THEM!
-PATH = Path(dirname(__file__))
-
 # User-specified constants
 PATIENT_NUMBER = 30
 DOCTOR_NUMBER = 50

@@ -1,3 +1,9 @@
+from os.path import dirname
+from pathlib import Path
+
+# WARNING! AUTO-GENERATED CONSTANTS! DO NOT CHANGE THEM!
+PATH = Path(dirname(__file__))
+
 # CONSTANTS
 TABLE_USER = "GENERAL_USER"
 TABLE_PATIENT = "PATIENT"
