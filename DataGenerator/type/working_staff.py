@@ -1,7 +1,7 @@
 import datetime
 import random
 
-from DataGenerator.DateGenerator import gen_datetime
+from DataGenerator.generator.DateGenerator import gen_datetime
 from DataGenerator.Pool import GeneralPool
 from DataGenerator.config import *
 from DataGenerator.static import *
