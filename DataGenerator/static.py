@@ -3,6 +3,14 @@ from pathlib import Path
 
 # WARNING! AUTO-GENERATED CONSTANTS! DO NOT CHANGE THEM!
 PATH = Path(dirname(__file__))
+DATASETS_FOLDER = PATH / "dataset"
+
+ADDRESS_SET_FILE = DATASETS_FOLDER / "address.txt"
+FNAME_SET_FILE = DATASETS_FOLDER / "first_names.all.txt"
+LNAME_SET_FILE = DATASETS_FOLDER / "last_names.all.txt"
+EMAIL_SET_FILE = DATASETS_FOLDER / "email.txt"
+PHONE_SET_FILE = DATASETS_FOLDER / "phone.txt"
+PASSWORD_SET_FILE = DATASETS_FOLDER / "password.txt"
 
 # CONSTANTS
 TABLE_USER = "GENERAL_USER"

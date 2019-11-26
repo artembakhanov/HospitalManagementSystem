@@ -218,4 +218,3 @@ CREATE TABLE PRESCRIPTION (
     Med_rec_id INTEGER REFERENCES MEDICAL_RECORD(Med_rec_id),
     PRIMARY KEY (Prescription_id)
 );
-

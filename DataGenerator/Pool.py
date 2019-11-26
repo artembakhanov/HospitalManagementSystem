@@ -1,5 +1,6 @@
 from random import shuffle
 
+from DataGenerator.static import *
 from DataGenerator.config import *
 
 
