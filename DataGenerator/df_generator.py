@@ -17,8 +17,8 @@ from DataGenerator.static import PATH
 dg = DataGenerator()
 sql = "".join(dg.generate())
 
-for df in [(PATH / "pg_dump.sql", PATH.parent / "SQL" / "init.sql"),
-           (PATH / "ms_dump.sql", PATH.parent / "SQL" / "init_mysql.sql")]:
+for df in [(PATH.parent / "SQL" / "pg_dump.sql", PATH.parent / "SQL" / "init.sql"),
+           (PATH.parent / "SQL" / "ms_dump.sql", PATH.parent / "SQL" / "init_mysql.sql")]:
     with open(df[0], "w", encoding='utf-8') as dump:
         dump.write("--Creating tables\n")
         with open(df[1], "r", encoding='utf-8') as init:
@@ -46,15 +46,15 @@ conn = psycopg2.connect(
 )
 conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 conn.autocommit = True
-with open(PATH / "pg_dump.sql", encoding='utf-8') as f:
+with open(PATH.parent / "SQL" / "pg_dump.sql", encoding='utf-8') as f:
     conn.cursor().execute(f.read())
 print("postgres works!")
 conn.close()
 
-print("starting testing mysql")
+print("starting testing sqlite")
 conn = sqlite3.connect(":memory:")
 cursor = conn.cursor()
-with open(PATH / "ms_dump.sql", encoding='utf-8') as f:
+with open(PATH.parent / "SQL" / "ms_dump.sql", encoding='utf-8') as f:
     # a = f.read().split(";")
     # for aa in a:
     #     cursor.execute(aa)
@@ -62,4 +62,4 @@ with open(PATH / "ms_dump.sql", encoding='utf-8') as f:
 conn.commit()
 cursor.execute("SELECT * FROM general_user;")
 print(cursor.fetchall())
-print("mysql works!")
+print("sqlite works!")
