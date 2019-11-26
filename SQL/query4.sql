@@ -3,7 +3,6 @@ WITH a1 AS (
 	FROM appointment
 	WHERE start_time BETWEEN CURRENT_DATE - INTERVAL '1 month' AND CURRENT_DATE
 	GROUP BY patient_id
-	ORDER BY patient_id
 ),	a2 AS (
 	SELECT patient_id, num, DATE_PART('year', age(birth_date)) AS age FROM a1 NATURAL JOIN patient NATURAL JOIN general_user
 ),  p1 AS (

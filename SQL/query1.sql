@@ -8,8 +8,8 @@ WITH p_id AS (
 	FROM
 		appointment
 	WHERE
-		start_time = (
-			SELECT MAX(start_time)
+		start_time::date = (
+			SELECT MAX(start_time::date)
 			FROM appointment
 			WHERE patient_id=(SELECT patient_id FROM p_id)
 			)
