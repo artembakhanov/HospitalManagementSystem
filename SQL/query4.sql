@@ -5,7 +5,7 @@ WITH a1 AS (
 	GROUP BY patient_id
 	ORDER BY patient_id
 ),	a2 AS (
-	SELECT patient_id, num, DATE_PART('year', CURRENT_DATE) - DATE_PART('year', birth_date) AS age FROM a1 NATURAL JOIN patient NATURAL JOIN general_user
+	SELECT patient_id, num, DATE_PART('year', age(birth_date)) AS age FROM a1 NATURAL JOIN patient NATURAL JOIN general_user
 ),  p1 AS (
 	SELECT COUNT(patient_id) * 200 as total_price
 	FROM a2
