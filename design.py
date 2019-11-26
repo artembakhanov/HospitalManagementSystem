@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1920, 1080)
 
-        oImage = QImage("tedd_codd.jpg")
+        oImage = QImage("back1.jpg")
         palette = QPalette()
         palette.setBrush(QPalette.Window, QBrush(oImage))
         self.setPalette(palette)
