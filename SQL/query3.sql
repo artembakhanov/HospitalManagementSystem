@@ -23,4 +23,4 @@ WITH week1 as (
 	INTERSECT SELECT patient_id FROM week3
 	INTERSECT SELECT patient_id FROM week4
 )
-SELECT patient_id, fname, lname FROM p_ids NATURAL JOIN patient NATURAL JOIN general_user;
+SELECT patient_id, fname, lname FROM p_ids NATURAL JOIN patient NATURAL JOIN general_user ORDER BY patient_id;
