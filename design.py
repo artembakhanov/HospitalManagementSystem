@@ -104,10 +104,10 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.def_q1_button.setText(_translate("MainWindow", "Default Query 1"))
-        self.def_q2_button.setText(_translate("MainWindow", "Default Qeury 2"))
-        self.def_q3_button.setText(_translate("MainWindow", "Default Qeury 3"))
-        self.def_q4_button.setText(_translate("MainWindow", "Default Qeury 4"))
-        self.def_q5_button.setText(_translate("MainWindow", "Default Qeury 5"))
+        self.def_q2_button.setText(_translate("MainWindow", "Default Query 2"))
+        self.def_q3_button.setText(_translate("MainWindow", "Default Query 3"))
+        self.def_q4_button.setText(_translate("MainWindow", "Default Query 4"))
+        self.def_q5_button.setText(_translate("MainWindow", "Default Query 5"))
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
