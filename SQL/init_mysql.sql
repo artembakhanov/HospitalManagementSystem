@@ -32,8 +32,8 @@ CREATE TABLE MESSAGE (
     Message_id SERIAL UNIQUE,
     Message_time DATETIME NOT NULL, -- 'YYYY-MM-DD HH-MM-SS'
     Content VARCHAR(500),
-    Sender_email INTEGER REFERENCES GENERAL_USER(User_id),
-    Receiver_email INTEGER REFERENCES GENERAL_USER(User_id),
+    Sender INTEGER REFERENCES GENERAL_USER(User_id),
+    Receiver INTEGER REFERENCES GENERAL_USER(User_id),
     PRIMARY KEY (Message_id)
 );
 
@@ -149,7 +149,7 @@ CREATE TABLE DISH (
     Dish_id SERIAL UNIQUE,
     Name VARCHAR(30) NOT NULL,
     Energy_value INTEGER NOT NULL,
-    Components VARCHAR(60) NOT NULL,
+    Description VARCHAR(500) NOT NULL,
     PRIMARY KEY (Dish_id)
 );
 
@@ -214,7 +214,7 @@ CREATE TABLE MEDICAL_RECORD (
 
 CREATE TABLE PRESCRIPTION (
     Prescription_id SERIAL UNIQUE,
-    Medicals VARCHAR(50) NOT NULL,
+    Description VARCHAR(500) NOT NULL,
     Med_rec_id INTEGER REFERENCES MEDICAL_RECORD(Med_rec_id),
     PRIMARY KEY (Prescription_id)
 );
