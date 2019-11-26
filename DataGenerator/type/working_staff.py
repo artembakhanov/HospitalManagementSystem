@@ -43,7 +43,7 @@ class WorkingStaff(User):
         pool = GeneralPool()
         users = super(WorkingStaff, WorkingStaff).generate(n)
         for i, user in enumerate(users):
-            user.role += ROLE_WORKING_STAFF  # todo: cock
+            user.role += ROLE_WORKING_STAFF
             user.specialize(WorkingStaff,
                             working_staff_id=pool.get("WorkingStaffID"),
                             salary=None,

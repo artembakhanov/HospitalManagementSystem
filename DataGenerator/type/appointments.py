@@ -78,7 +78,6 @@ class Appointment:
         pool = GeneralPool()
         appointments = []
         for i in range(n):
-            dteam = random.choice(dteams)
             app = Appointment()
             app.id = pool.get("AppointmentID")
             app.type = random.randint(0, 1)
@@ -96,7 +95,7 @@ class Appointment:
             notif_time = app.start_time - datetime.timedelta(minutes=15)
             title = APPOINTMENT_NOTIFICATION_TITLE
             content = APPOINTMENT_NOTIFICATION_CONTENT.format(id=app.id, room=app.room)
-            app.notifications.append(Notification(notif_time, title, content, dteam.doctor_id))
+            app.notifications.append(Notification(notif_time, title, content, slot.doctor_team_id))
             app.notifications.append(Notification(notif_time, title, content, app.patient_id))
 
             # generate invoice bill

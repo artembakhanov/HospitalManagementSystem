@@ -33,7 +33,7 @@ class DataGenerator:
         print("doctors teams have been generated")
         self._generate_nurses()
         print("nurses teams have been generated")
-        self._generate_appointments(self.users)
+        self._generate_appointments()
         print("appointments have been generated")
 
         GeneralPool().reset()
@@ -58,7 +58,7 @@ class DataGenerator:
         self.nurses = UserGenerator.generate_nurses()
         self.sql.extend([nurse.sql() for nurse in self.nurses])
 
-    def _generate_appointments(self, users):
+    def _generate_appointments(self):
         """
         Generates appointments, invoices, notifications about appointments, and medical records.
         :param users: all users that have already been generated
