@@ -62,6 +62,6 @@ Distributed under the GNU General Public License v3.0. See [`LICENSE`](LICENSE) 
 
 1. [@artembakhanov](https://github.com/artembakhanov)
 2. [@TooTiredOne](https://github.com/TooTiredOne)
-3. Marko Pezer
+3. [Marko Pezer](https://github.com/peki453)
 4. Dinar Zayakhov
 5. Utkarsh Kalra
